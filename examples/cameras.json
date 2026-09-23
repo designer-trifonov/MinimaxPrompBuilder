@@ -1,0 +1,102 @@
+[
+  {
+    "id": "seed00",
+    "name": "Наезд",
+    "text": "The camera pushes in."
+  },
+  {
+    "id": "seed01",
+    "name": "Отъезд",
+    "text": "The camera pulls out."
+  },
+  {
+    "id": "seed02",
+    "name": "Приближение (зум)",
+    "text": "The camera zooms in."
+  },
+  {
+    "id": "seed03",
+    "name": "Отдаление (зум)",
+    "text": "The camera zooms out."
+  },
+  {
+    "id": "seed04",
+    "name": "Панорама влево",
+    "text": "The camera pans left."
+  },
+  {
+    "id": "seed05",
+    "name": "Панорама вправо",
+    "text": "The camera pans right."
+  },
+  {
+    "id": "seed06",
+    "name": "Проезд влево",
+    "text": "The camera trucks left."
+  },
+  {
+    "id": "seed07",
+    "name": "Проезд вправо",
+    "text": "The camera trucks right."
+  },
+  {
+    "id": "seed08",
+    "name": "Наклон вверх",
+    "text": "The camera tilts up."
+  },
+  {
+    "id": "seed09",
+    "name": "Наклон вниз",
+    "text": "The camera tilts down."
+  },
+  {
+    "id": "seed10",
+    "name": "Подъём камеры",
+    "text": "The camera rises vertically."
+  },
+  {
+    "id": "seed11",
+    "name": "Спуск камеры",
+    "text": "The camera lowers vertically."
+  },
+  {
+    "id": "seed12",
+    "name": "Облёт по дуге",
+    "text": "The camera arcs around the subject."
+  },
+  {
+    "id": "seed13",
+    "name": "Сопровождение",
+    "text": "The camera tracks the subject."
+  },
+  {
+    "id": "seed14",
+    "name": "Статичная камера",
+    "text": "The camera stays static."
+  },
+  {
+    "id": "seed15",
+    "name": "Вид от первого лица",
+    "text": "The camera shows a POV view."
+  },
+  {
+    "id": "seed16",
+    "name": "Лёгкая тряска",
+    "text": "The camera shakes slightly."
+  },
+  {
+    "id": "seed17",
+    "name": "Сильная тряска",
+    "text": "The camera shakes strongly."
+  },
+  {
+    "id": "seed18",
+    "name": "Вращение по часовой",
+    "text": "The camera rolls clockwise."
+  },
+  {
+    "id": "seed19",
+    "name": "Вращение против часовой",
+    "text": "The camera rolls counterclockwise."
+  }
+]

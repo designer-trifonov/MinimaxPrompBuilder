@@ -1,0 +1,106 @@
+[
+  {
+    "id": "p000",
+    "name": "Стоит строго в анфас (лицом к нам)",
+    "text": "standing, strictly facing the camera, en face",
+    "for": "any",
+    "adult": "all",
+    "category": "Стоя"
+  },
+  {
+    "id": "p001",
+    "name": "Стоит ровно спиной к нам",
+    "text": "standing with their back turned squarely to the camera",
+    "for": "any",
+    "adult": "all",
+    "category": "Стоя"
+  },
+  {
+    "id": "p002",
+    "name": "Стоит у окна строго в анфас",
+    "text": "standing with a window behind them, strictly facing the camera, en face",
+    "for": "any",
+    "adult": "all",
+    "category": "У окна"
+  },
+  {
+    "id": "p003",
+    "name": "Стоит у окна ровно спиной к нам",
+    "text": "standing and facing toward a window, with their back turned squarely to the camera",
+    "for": "any",
+    "adult": "all",
+    "category": "У окна"
+  },
+  {
+    "id": "p004",
+    "name": "Сидит на стуле строго в анфас",
+    "text": "sitting on a chair, strictly facing the camera, en face",
+    "for": "any",
+    "adult": "all",
+    "category": "На стуле"
+  },
+  {
+    "id": "p005",
+    "name": "Сидит на стуле ровно спиной к нам",
+    "text": "sitting on a chair, facing away from the camera, with their back turned squarely toward it",
+    "for": "any",
+    "adult": "all",
+    "category": "На стуле"
+  },
+  {
+    "id": "p006",
+    "name": "Сидит на диване",
+    "text": "sitting on a sofa",
+    "for": "any",
+    "adult": "all",
+    "category": "На диване"
+  },
+  {
+    "id": "p007",
+    "name": "Сидит на краю кровати строго в анфас",
+    "text": "sitting on the edge of a bed, strictly facing the camera, en face",
+    "for": "any",
+    "adult": "all",
+    "category": "На кровати"
+  },
+  {
+    "id": "p008",
+    "name": "Сидит на кровати ровно спиной к нам",
+    "text": "sitting on the bed, facing away from the camera, with their back turned squarely toward it",
+    "for": "any",
+    "adult": "all",
+    "category": "На кровати"
+  },
+  {
+    "id": "p017",
+    "name": "Стоит, облокотившись на стену, строго в анфас",
+    "text": "standing with their back against the wall, strictly facing the camera, en face",
+    "for": "any",
+    "adult": "all",
+    "category": "У стены"
+  },
+  {
+    "id": "p018",
+    "name": "Сидит, скрестив ноги (по-турецки)",
+    "text": "sitting cross-legged on the floor",
+    "for": "any",
+    "adult": "all",
+    "category": "На полу"
+  },
+  {
+    "id": "p019",
+    "name": "Сидит на корточках, строго в анфас",
+    "text": "squatting with their feet flat on the ground, strictly facing the camera, en face",
+    "for": "any",
+    "adult": "all",
+    "category": "На полу"
+  },
+  {
+    "id": "p020",
+    "name": "Сидит на полу, обняв колени",
+    "text": "sitting on the floor, hugging their knees",
+    "for": "any",
+    "adult": "all",
+    "category": "На полу"
+  }
+]

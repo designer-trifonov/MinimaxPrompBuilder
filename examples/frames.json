@@ -1,0 +1,42 @@
+[
+  {
+    "id": "seed00",
+    "name": "Крупный план",
+    "text": "close-up shot of "
+  },
+  {
+    "id": "seed01",
+    "name": "Средний план",
+    "text": "medium shot of "
+  },
+  {
+    "id": "seed02",
+    "name": "Общий план",
+    "text": "wide shot of "
+  },
+  {
+    "id": "seed03",
+    "name": "Сверхкрупный план",
+    "text": "extreme close-up shot of "
+  },
+  {
+    "id": "seed04",
+    "name": "Через плечо",
+    "text": "over-the-shoulder shot of "
+  },
+  {
+    "id": "seed05",
+    "name": "Съёмка снизу",
+    "text": "low-angle shot of "
+  },
+  {
+    "id": "seed06",
+    "name": "Съёмка сверху",
+    "text": "high-angle shot of "
+  },
+  {
+    "id": "seed07",
+    "name": "Вид сверху (птичий полёт)",
+    "text": "bird's-eye view shot of "
+  }
+]

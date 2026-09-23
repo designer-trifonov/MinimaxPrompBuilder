@@ -1,0 +1,27 @@
+[
+  {
+    "id": "i000",
+    "name": "Одеть в одежду с референса",
+    "text": "{A} wears the outfit from {B}"
+  },
+  {
+    "id": "i001",
+    "name": "Поместить в помещение с референса",
+    "text": "{A} is placed in the environment of {B}"
+  },
+  {
+    "id": "i002",
+    "name": "Стоит на фоне референса",
+    "text": "{A} stands in front of {B}"
+  },
+  {
+    "id": "i003",
+    "name": "Держит предмет с референса",
+    "text": "{A} holds the object from {B}"
+  },
+  {
+    "id": "i004",
+    "name": "Сидит в помещении с референса",
+    "text": "{A} sits in the environment of {B}"
+  }
+]

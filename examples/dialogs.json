@@ -1,0 +1,23 @@
+[
+  {
+    "id": "d0",
+    "name": "Говорит спокойно",
+    "text": "in a calm, normal voice",
+    "lang": "Russian",
+    "category": "Интонация"
+  },
+  {
+    "id": "d2",
+    "name": "Шепчет",
+    "text": "in a hushed whisper",
+    "lang": "Russian",
+    "category": "Интонация"
+  },
+  {
+    "id": "d4",
+    "name": "Кричит",
+    "text": "in a loud shout",
+    "lang": "Russian",
+    "category": "Интонация"
+  }
+]
