@@ -1,0 +1,30 @@
+[
+  {
+    "id": "s000",
+    "name": "Светлая",
+    "text": "fair",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Бледная",
+    "text": "pale",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Смуглая",
+    "text": "tan",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Тёмная",
+    "text": "dark",
+    "for": "any",
+    "adult": "all"
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "s000",
+    "name": "Очень низкий",
+    "text": "very short",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Низкий",
+    "text": "short",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Среднего роста",
+    "text": "average-height",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Высокий",
+    "text": "tall",
+    "for": "any",
+    "adult": "all"
+  }
+]

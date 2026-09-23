@@ -1,0 +1,30 @@
+[
+  {
+    "id": "s000",
+    "name": "Обычное советское",
+    "text": "plain Soviet-style dress",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Современное облегающее короткое",
+    "text": "modern tight short dress",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Викторианской эпохи",
+    "text": "Victorian-era dress",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Роскошное",
+    "text": "luxurious gown",
+    "for": "female",
+    "adult": "all"
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "s000",
+    "name": "Истощённое",
+    "text": "emaciated, extremely thin",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s001",
+    "name": "Худое",
+    "text": "thin",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s002",
+    "name": "Стройное",
+    "text": "slim",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s003",
+    "name": "Среднее",
+    "text": "average-build",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s004",
+    "name": "Спортивное",
+    "text": "athletic",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s005",
+    "name": "Накачанное",
+    "text": "muscular",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s006",
+    "name": "Полное",
+    "text": "plump",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s007",
+    "name": "Очень полное",
+    "text": "obese",
+    "for": "any",
+    "adult": "18+"
+  }
+]

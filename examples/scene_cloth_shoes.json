@@ -1,0 +1,58 @@
+[
+  {
+    "id": "s000",
+    "name": "Кроссовки спортивные",
+    "text": "athletic sneakers",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Кеды",
+    "text": "canvas sneakers",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Туфли",
+    "text": "dress shoes",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Ботинки обычные",
+    "text": "regular boots",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s004",
+    "name": "Ботинки для похода",
+    "text": "hiking boots",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s005",
+    "name": "Сапоги кожаные",
+    "text": "leather boots",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s006",
+    "name": "Сапоги резиновые",
+    "text": "rubber boots",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s007",
+    "name": "Тапочки домашние мягкие",
+    "text": "soft house slippers",
+    "for": "any",
+    "adult": "all"
+  }
+]

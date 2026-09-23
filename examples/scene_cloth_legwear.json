@@ -1,0 +1,23 @@
+[
+  {
+    "id": "s000",
+    "name": "Плотные колготки",
+    "text": "thick opaque tights",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Прозрачные капроновые колготки",
+    "text": "sheer nylon tights",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Чёрные облегающие колготки",
+    "text": "tight tights",
+    "for": "female",
+    "adult": "all"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "s000",
+    "name": "Майка",
+    "text": "tank top",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Короткий топик (только грудь)",
+    "text": "short bandeau top covering only the chest",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Футболка",
+    "text": "t-shirt",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Рубашка офисная",
+    "text": "office shirt",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s004",
+    "name": "Рубашка клетчатая",
+    "text": "plaid shirt",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s005",
+    "name": "Свитер",
+    "text": "sweater",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s006",
+    "name": "Кардиган",
+    "text": "cardigan",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s007",
+    "name": "Худи",
+    "text": "hoodie",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s008",
+    "name": "Пиджак",
+    "text": "blazer",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s009",
+    "name": "Халат шёлковый",
+    "text": "silk robe",
+    "for": "any",
+    "adult": "all"
+  }
+]

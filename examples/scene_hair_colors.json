@@ -1,0 +1,44 @@
+[
+  {
+    "id": "s000",
+    "name": "Блонд",
+    "text": "blonde",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Чёрные",
+    "text": "black",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Каштановые",
+    "text": "brown",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Русые",
+    "text": "light brown",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s004",
+    "name": "Рыжие",
+    "text": "red",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s005",
+    "name": "Седые",
+    "text": "grey",
+    "for": "any",
+    "adult": "all"
+  }
+]

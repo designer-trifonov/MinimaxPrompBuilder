@@ -1,0 +1,58 @@
+[
+  {
+    "id": "s000",
+    "name": "Голый / голая",
+    "text": "nude",
+    "for": "any",
+    "adult": "18+"
+  },
+  {
+    "id": "s001",
+    "name": "Семейные трусы",
+    "text": "loose boxer shorts",
+    "for": "male",
+    "adult": "18+"
+  },
+  {
+    "id": "s002",
+    "name": "Спортивные трусы",
+    "text": "athletic boxer briefs",
+    "for": "male",
+    "adult": "18+"
+  },
+  {
+    "id": "s003",
+    "name": "Плавки",
+    "text": "swim briefs",
+    "for": "male",
+    "adult": "18+"
+  },
+  {
+    "id": "s004",
+    "name": "Панталоны",
+    "text": "high-waisted cotton bloomers",
+    "for": "female",
+    "adult": "18+"
+  },
+  {
+    "id": "s005",
+    "name": "Обычные трусы",
+    "text": "plain cotton panties",
+    "for": "female",
+    "adult": "18+"
+  },
+  {
+    "id": "s006",
+    "name": "Кружевные трусы",
+    "text": "lace panties",
+    "for": "female",
+    "adult": "18+"
+  },
+  {
+    "id": "s007",
+    "name": "Стринги",
+    "text": "thong",
+    "for": "female",
+    "adult": "18+"
+  }
+]

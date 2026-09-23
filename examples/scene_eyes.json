@@ -1,0 +1,30 @@
+[
+  {
+    "id": "s000",
+    "name": "Карие",
+    "text": "brown",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Голубые",
+    "text": "blue",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Зелёные",
+    "text": "green",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Серые",
+    "text": "grey",
+    "for": "any",
+    "adult": "all"
+  }
+]

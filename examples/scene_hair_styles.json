@@ -1,0 +1,51 @@
+[
+  {
+    "id": "s000",
+    "name": "Длинные прямые",
+    "text": "long straight",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Длинные волнистые",
+    "text": "long wavy",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Средней длины",
+    "text": "shoulder-length",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Каре",
+    "text": "bob-cut",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s004",
+    "name": "Короткая стрижка",
+    "text": "short",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s005",
+    "name": "Кудрявые",
+    "text": "curly",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s006",
+    "name": "Собранные",
+    "text": "tied-back",
+    "for": "any",
+    "adult": "all"
+  }
+]

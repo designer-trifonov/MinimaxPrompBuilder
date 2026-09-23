@@ -1,0 +1,79 @@
+[
+  {
+    "id": "s000",
+    "name": "Чёрный",
+    "text": "black",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Белый",
+    "text": "white",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Серый",
+    "text": "grey",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Красный",
+    "text": "red",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s004",
+    "name": "Синий",
+    "text": "blue",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s005",
+    "name": "Зелёный",
+    "text": "green",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s006",
+    "name": "Жёлтый",
+    "text": "yellow",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s007",
+    "name": "Розовый",
+    "text": "pink",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s008",
+    "name": "Бежевый",
+    "text": "beige",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s009",
+    "name": "Коричневый",
+    "text": "brown",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s010",
+    "name": "Фиолетовый",
+    "text": "purple",
+    "for": "any",
+    "adult": "all"
+  }
+]

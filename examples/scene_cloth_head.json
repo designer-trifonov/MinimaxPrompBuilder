@@ -1,0 +1,37 @@
+[
+  {
+    "id": "s000",
+    "name": "Шляпа",
+    "text": "hat",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Кепка",
+    "text": "cap",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Роскошная золотая корона",
+    "text": "luxurious golden royal crown",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Ремень",
+    "text": "belt",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s004",
+    "name": "Галстук",
+    "text": "necktie",
+    "for": "male",
+    "adult": "all"
+  }
+]

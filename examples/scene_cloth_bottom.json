@@ -1,0 +1,72 @@
+[
+  {
+    "id": "s000",
+    "name": "Брюки",
+    "text": "trousers",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Джинсы скинни",
+    "text": "skinny jeans",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Джинсы зауженные",
+    "text": "tapered jeans",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s003",
+    "name": "Джинсы трубы",
+    "text": "straight-leg jeans",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s004",
+    "name": "Джинсы клёш",
+    "text": "flared jeans",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s005",
+    "name": "Леггинсы",
+    "text": "leggings",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s006",
+    "name": "Шорты",
+    "text": "shorts",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s007",
+    "name": "Мини-юбка гофрированная",
+    "text": "pleated mini skirt",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s008",
+    "name": "Юбка до колен",
+    "text": "knee-length skirt",
+    "for": "female",
+    "adult": "all"
+  },
+  {
+    "id": "s009",
+    "name": "Юбка до середины бедра",
+    "text": "mid-thigh skirt",
+    "for": "female",
+    "adult": "all"
+  }
+]

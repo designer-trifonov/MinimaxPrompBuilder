@@ -1,0 +1,23 @@
+[
+  {
+    "id": "s000",
+    "name": "Шуба",
+    "text": "fur coat",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s001",
+    "name": "Куртка кожаная",
+    "text": "leather jacket",
+    "for": "any",
+    "adult": "all"
+  },
+  {
+    "id": "s002",
+    "name": "Пальто",
+    "text": "overcoat",
+    "for": "any",
+    "adult": "all"
+  }
+]
