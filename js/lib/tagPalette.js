@@ -1,4 +1,4 @@
-import { el, small } from "./dom.js";
+import { el, tagChip } from "./dom.js";
 
 // Ищет в референс-блоках теги <Subject N>, <Picture N>, <Video N>, <Audio N> простым поиском по тексту.
 const TAG_RE = /<(Subject|Picture|Video|Audio) (\d+)>/g;
@@ -54,7 +54,7 @@ export function createPalette(root, { onSizeChange }) {
       box.style.display = tags.length ? "flex" : "none";
       if (tags.length) box.append(el("span", "opacity:.7;", "Вставить:"));
       tags.forEach((t) => {
-        const chip = small(t.tag);
+        const chip = tagChip(t.tag);
         chip.title = t.hint;
         chip.onmousedown = (e) => e.preventDefault(); // не сбрасывать курсор в окне ввода
         chip.onclick = () => insert(t.tag, chip);

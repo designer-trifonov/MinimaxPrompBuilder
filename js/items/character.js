@@ -20,8 +20,9 @@ const refEntries = () =>
 
 export const characterItem = {
   t: "character",
+  icon: "person",
   menu: {
-    icon: "🧑", label: "Персонаж",
+    icon: "person", label: "Персонаж",
     children: () => [
       ...refEntries(),
       ...templateEntries(characterStore, {
@@ -40,7 +41,7 @@ export const characterItem = {
     const tag = `<Subject ${it.ref}>`;
     if (!state.some((b) => b.type === "ref" && (b.text || "").includes(tag))) state.push(makeRef(it.ref, "person"));
   },
-  title: (it) => `🧑 Персонаж: ${it.name ?? ""}`,
+  title: (it) => `Персонаж: ${it.name ?? ""}`,
   body: (it, ctx) => [textArea(it, ctx, 3)],
   compile: (it) => (it.text || "").trim(),
 };

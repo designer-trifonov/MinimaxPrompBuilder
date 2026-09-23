@@ -18,3 +18,4 @@ export const dialogStore = make("dialogs");
 export const refTemplateStore = make("ref_templates");
 export const shotDescStore = make("shot_descriptions");
 export const weActionStore = make("we_actions");
+export const loraStore = make("loras");

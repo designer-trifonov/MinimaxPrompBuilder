@@ -22,8 +22,9 @@ export const interactionItem = {
       if (m && !state.some((b) => b.type === "ref" && (b.text || "").includes(m[0]))) state.push(makeRef(Number(m[1]), noun));
     });
   },
+  icon: "link",
   menu: {
-    icon: "🔗", label: "Связь референсов",
+    icon: "link", label: "Связь референсов",
     children: () => [
       ...templateEntries(interactionStore, {
         make,
@@ -34,7 +35,7 @@ export const interactionItem = {
       { label: "Пустой элемент", make: () => make({ name: "Связь", text: "{A} ... {B}" }) },
     ],
   },
-  title: (it) => `🔗 ${it.name ?? "Связь"}`,
+  title: (it) => `${it.name ?? "Связь"}`,
   body: (it, ctx) => {
     const ab = row(el("span", "", "A:"), textInput(it, "a", ctx, "150px"), el("span", "", "B:"), textInput(it, "b", ctx, "150px"));
     // Итоговая фраза видна сразу и обновляется при правке A/B — именно она уйдёт в промпт.

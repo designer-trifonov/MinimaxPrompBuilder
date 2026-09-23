@@ -1,4 +1,4 @@
-import { card, textArea } from "../lib/dom.js";
+import { card, textArea, truncate } from "../lib/dom.js";
 import { templateEntries } from "../lib/templates.js";
 
 // Фабрика простых блоков «закреплённый заголовок + окно ввода».
@@ -13,6 +13,7 @@ export function makeTextBlock({
   uiTitle = title,        // подпись в интерфейсе ноды
   defaultText,            // (ctx) => начальный текст блока
   group,                  // ключ группы в меню (см. blocks/index.js)
+  color,                  // цвет полоски карточки (см. CARD_COLORS в lib/dom.js)
 }) {
   const make = (text = "") => () => ({ type, text });
   const toMenu = (nodes) =>
@@ -37,7 +38,9 @@ export function makeTextBlock({
     type, tail, group, head: isHead, fallback: fallback && `${title}: ${fallback}`,
     menu,
     render(b, i, ctx) {
-      return card(`${icon} ${uiTitle}${raw ? "" : ":"}`, ctx.getState(), i, ctx, [textArea(b, ctx)], { sameKind: true });
+      return card(`${uiTitle}${raw ? "" : ":"}`, ctx.getState(), i, ctx, [textArea(b, ctx)], {
+        sameKind: true, color, icon, summary: truncate(b.text, 28),
+      });
     },
     compile: (b) => {
       const t = (b.text || "").trim();

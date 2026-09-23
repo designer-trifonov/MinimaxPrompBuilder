@@ -34,5 +34,20 @@ export function createStore(backend) {
       items = items.filter((t) => t.id !== id);
       await persist();
     },
+    // Переносит запись в начало списка (например, «включённое — наверх»). Остальной порядок
+    // не трогает — только вынимает элемент и ставит его первым.
+    async moveToFront(id) {
+      await load();
+      const idx = items.findIndex((t) => t.id === id);
+      if (idx > 0) { const [it] = items.splice(idx, 1); items.unshift(it); }
+      await persist();
+    },
+    // Обратное — переносит запись в конец списка (например, «выключенное — вниз»).
+    async moveToBack(id) {
+      await load();
+      const idx = items.findIndex((t) => t.id === id);
+      if (idx >= 0 && idx < items.length - 1) { const [it] = items.splice(idx, 1); items.push(it); }
+      await persist();
+    },
   };
 }

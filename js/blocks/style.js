@@ -1,11 +1,13 @@
 import { makeTextBlock } from "./textBlock.js";
 import { styleStore } from "../core/stores.js";
+import { CARD_COLORS } from "../lib/dom.js";
 
 export const styleBlock = makeTextBlock({
   type: "style",
-  icon: "🎨",
+  icon: "style",
   label: "Визуальный стиль",
   title: "Visual Style and Lighting",
+  color: CARD_COLORS.style,
   templates: {
     store: styleStore,
     newLabel: "Новый стиль",

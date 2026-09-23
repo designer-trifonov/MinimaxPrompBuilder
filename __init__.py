@@ -1,4 +1,5 @@
 from .scene_builder import SceneBuilder
+from .lora_guide import LoraGuide
 
 FPS = 24  # модель MiniMax H3 работает на 24 кадрах в секунду
 
@@ -33,7 +34,7 @@ class PromptBlocks:
         return (prompt, frames_for(duration))
 
 
-NODE_CLASS_MAPPINGS = {"PromptBlocks": PromptBlocks, "SceneBuilder": SceneBuilder}
-NODE_DISPLAY_NAME_MAPPINGS = {"PromptBlocks": "Prompt Blocks", "SceneBuilder": "Scene Builder"}
+NODE_CLASS_MAPPINGS = {"PromptBlocks": PromptBlocks, "SceneBuilder": SceneBuilder, "LoraGuide": LoraGuide}
+NODE_DISPLAY_NAME_MAPPINGS = {"PromptBlocks": "Prompt Blocks", "SceneBuilder": "Scene Builder", "LoraGuide": "LoRA Guide"}
 WEB_DIRECTORY = "./js"
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS", "WEB_DIRECTORY"]

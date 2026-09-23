@@ -1,4 +1,4 @@
-import { el, row, card, textArea, textInput, segmented, chipToggle } from "../lib/dom.js";
+import { el, row, card, textArea, textInput, segmented, chipToggle, CARD_COLORS } from "../lib/dom.js";
 import { ROLE_DEFS_BY_MEDIA, roleList, defsFor, makeRef, ownTag, kindOf, noteFor, retextNoun } from "./refImageRoles.js";
 
 // Референс (reference-to-video): определение субъекта + маркер сохранения (retention).
@@ -43,7 +43,7 @@ export const refImageBlock = {
   type: "ref",
   group: "ref",
   menu: {
-    icon: "🧩",
+    icon: "ref",
     label: "Референс (reference-to-video)",
     children: [
       { label: "🖼 Из картинки", children: mediaMenuChildren("picture") },
@@ -102,14 +102,14 @@ export const refImageBlock = {
     renderExtra();
 
     updatePreview();
-    const title = media === "video" ? "🧩 Референс-видео" : "🧩 Референс-картинка";
+    const title = media === "video" ? "Референс-видео" : "Референс-картинка";
     return card(title, ctx.getState(), i, ctx, [
       textArea(b, ctx),
       row(el("span", "min-width:110px;", "Что на референсе:"), kindRow),
       row(el("span", "", "Что делаем:"), retentionBox),
       extraBox,
       preview,
-    ], { sameKind: true });
+    ], { sameKind: true, color: CARD_COLORS.ref, icon: "ref", summary: defsFor(b)[kindOf(b)].label });
   },
 
   // Один блок = строка определения (используется, если группа не собирается целиком).

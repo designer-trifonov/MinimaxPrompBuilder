@@ -10,8 +10,9 @@ const blank = () => ({ t: "dialog", lang: LANG, spk: "S1", voice: "", text: "" }
 
 export const dialogItem = {
   t: "dialog",
+  icon: "chat",
   menu: {
-    icon: "💬", label: "Диалог",
+    icon: "chat", label: "Диалог",
     children: () => [
       ...groupedTemplateEntries(dialogStore, {
         make: (tpl) => ({ t: "dialog", lang: LANG, spk: "S1", voice: tpl.text, text: "" }),
@@ -22,7 +23,7 @@ export const dialogItem = {
       { label: "Пустой диалог", make: blank },
     ],
   },
-  title: (it) => `💬 Диалог`,
+  title: (it) => `Диалог`,
   body: (it, ctx) => [
     row(el("span", "", "Говорящий:"), textInput(it, "spk", ctx)),
     row(el("span", "", "Манера:"), textInput(it, "voice", ctx, "100%")),

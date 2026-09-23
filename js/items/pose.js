@@ -23,8 +23,9 @@ const make = (t, ctx) => ({ t: "pose", name: t.name, who: defaultSubject(ctx), t
 
 export const poseItem = {
   t: "pose",
+  icon: "person",
   menu: {
-    icon: "🧍", label: "Поза",
+    icon: "person", label: "Поза",
     children: () => [
       ...groupedTemplateEntries(poseStore, {
         make,
@@ -35,7 +36,7 @@ export const poseItem = {
       { label: "Пустой элемент", make: (ctx) => make({ name: "Поза", text: "" }, ctx) },
     ],
   },
-  title: (it) => `🧍 Поза: ${it.name ?? ""}${it.pov ? " (POV)" : ""}`,
+  title: (it) => `Поза: ${it.name ?? ""}${it.pov ? " (POV)" : ""}`,
   body: (it, ctx) => [
     row(el("span", "", "Субъект:"), textInput(it, "who", ctx, "150px")),
     row(el("span", "", "Камера:"), segmented(it, "pov", [[false, "Обычно"], [true, "POV"]], ctx)),

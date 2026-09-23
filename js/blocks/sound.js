@@ -1,11 +1,13 @@
 import { makeTextBlock } from "./textBlock.js";
 import { soundStore } from "../core/stores.js";
+import { CARD_COLORS } from "../lib/dom.js";
 
 export const soundBlock = makeTextBlock({
   type: "sound",
-  icon: "🔊",
+  icon: "speaker",
   label: "Звуки",
   title: "overall_soundscape",
+  color: CARD_COLORS.sound,
   tail: true,
   fallback: "N/A",
   templates: {

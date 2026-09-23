@@ -8,6 +8,7 @@ export function makeTemplateItem({ t, icon, label, store, textRows = 2, skipUnch
   const blank = () => ({ t, name: label, text: "" });
   return {
     t,
+    icon, // имя из ICONS (lib/dom.js) — используется и в меню, и в заголовке строки шота (blocks/shot.js)
     menu: {
       icon, label,
       children: () => [
@@ -15,7 +16,7 @@ export function makeTemplateItem({ t, icon, label, store, textRows = 2, skipUnch
         { label: "Пустой элемент", make: blank },
       ],
     },
-    title: (it) => `${icon} ${label}: ${it.name ?? ""}`,
+    title: (it) => `${label}: ${it.name ?? ""}`,
     body: (it, ctx) => [textArea(it, ctx, textRows)],
     compile: (it) => {
       const text = (it.text || "").trim();

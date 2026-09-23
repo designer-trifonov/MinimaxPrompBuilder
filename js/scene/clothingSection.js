@@ -1,4 +1,4 @@
-import { el, btn, small } from "../lib/dom.js";
+import { el, btn, small, icon } from "../lib/dom.js";
 import { templateEntries } from "../lib/templates.js";
 import { CLOTH_CATEGORIES, OUTFITS_CAT } from "./clothing.js";
 import { outfitStore } from "../shared/outfits.js";
@@ -53,9 +53,11 @@ const colorMenu = () => () => [
 
 export function renderClothes(person, ctx) {
   const box = el("div", "display:flex;flex-direction:column;gap:4px;");
-  box.append(el("div", "font-weight:bold;", "👕 Одежда"));
+  const heading = el("div", "display:flex;align-items:center;gap:6px;font-weight:600;");
+  heading.append(icon("outfit", { size: 14 }), el("span", "", "Одежда"));
+  box.append(heading);
   person.clothes.forEach((item, k) => {
-    const r = el("div", "display:flex;gap:4px;align-items:center;flex-wrap:wrap;");
+    const r = el("div", "display:flex;gap:4px;align-items:center;flex-wrap:wrap;background:#1c1e22;border-radius:8px;padding:5px 8px;");
     r.append(el("span", "flex:1;min-width:120px;", item.name));
     const del = small("✕");
     del.onclick = () => { person.clothes.splice(k, 1); ctx.rerender(); };

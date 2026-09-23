@@ -8,7 +8,10 @@ import { BLOCK_LIST } from "../blocks/index.js";
 //    (например, subject_definitions + retention_analysis у референсов).
 export const rank = (b) => BLOCK_LIST.findIndex((s) => s.type === b.type);
 
-export function compile(state) {
+// triggerWords — текст с триггер-словами включённых LoRA (см. loraStore в core/stores.js,
+// собирается в promptBlocks.js): вставляется сразу после референсов (subject_definitions/
+// retention_analysis) и перед первым шотом — независимо от того, есть ли вообще референсы.
+export function compile(state, { triggerWords } = {}) {
   const out = [];
   for (const spec of BLOCK_LIST) {
     const blocks = state.filter((b) => b.type === spec.type);
@@ -19,14 +22,15 @@ export function compile(state) {
     if (spec.compileGroup) {
       const text = blocks.length ? spec.compileGroup(blocks, state) : "";
       if (text) out.push({ text });
-      continue;
+    } else {
+      let shotNumber = 0;
+      for (const b of blocks) {
+        if (b.type === "shot") shotNumber++;
+        const text = spec.compile(b, { shotNumber });
+        if (text) out.push({ text });
+      }
     }
-    let shotNumber = 0;
-    for (const b of blocks) {
-      if (b.type === "shot") shotNumber++;
-      const text = spec.compile(b, { shotNumber });
-      if (text) out.push({ text });
-    }
+    if (spec.type === "ref" && triggerWords) out.push({ text: triggerWords });
   }
   if (!out.some((o) => !o.tail)) return "";
   return out.map((o) => o.text).join("\n\n");

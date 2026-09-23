@@ -23,8 +23,9 @@ export const actionItem = {
   t: "action",
   // Два входа: действие референса (кто на видео — субъект) и действие «за нас» (POV-зритель).
   // Пока оба поля текста пустые — заполняются вручную, здесь только структура/разметка времени.
+  icon: "clock",
   menu: {
-    icon: "⏱️", label: "Действие",
+    icon: "clock", label: "Действие",
     // children вызывается без ctx (Menu#draw зовёт top.items() без аргументов) — ctx доступен
     // только в make(ctx) на листе, см. Menu#row: it.make(this.ctx). defaultSubject считаем там.
     children: () => [
@@ -55,7 +56,7 @@ export const actionItem = {
     it.to = Math.min(Number(it.to) || 0, max);
     it.from = Math.min(Number(it.from) || 0, it.to);
   },
-  title: (it) => `⏱️ Действие${it.who === "we" ? " (мы, POV)" : it.who ? ` (${it.who})` : ""}`,
+  title: (it) => `Действие${it.who === "we" ? " (мы, POV)" : it.who ? ` (${it.who})` : ""}`,
   body: (it, ctx) => {
     const speedRow = row(el("span", "", "Темп:"));
     SPEEDS.forEach(([label, phrase]) => {

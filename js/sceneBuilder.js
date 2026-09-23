@@ -1,6 +1,6 @@
 // Точка входа ноды Scene Builder. Логика объектов живёт в scene/, общее — в lib/.
 import { app } from "../../scripts/app.js";
-import { el, btn } from "./lib/dom.js";
+import { el, btn, stopKeysBubbling } from "./lib/dom.js";
 import { Menu } from "./lib/menu.js";
 import { OBJECTS, OBJECT_MENU } from "./scene/objects/index.js";
 import { compileScene } from "./scene/compile.js";
@@ -36,8 +36,12 @@ app.registerExtension({
       mainView.append(list, bar);
       const menuView = el("div", "display:none;flex-direction:column;gap:6px;");
       root.append(mainView, menuView);
+      stopKeysBubbling(root);
 
       const fit = () => {
+        // LiteGraph растит ноду под новый размер, но не даёт уменьшиться без сброса — иначе
+        // сворачивание карточки не уменьшает окно ноды (разворачивание при этом работает как надо).
+        node.size[1] = 0;
         node.setSize([node.size[0], Math.max(root.scrollHeight + 70, 160)]);
         app.graph.setDirtyCanvas(true, true);
       };

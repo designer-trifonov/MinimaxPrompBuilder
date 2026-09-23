@@ -1,12 +1,18 @@
 // Точка входа: связывает узел ComfyUI с модулями. Логика блоков живёт в blocks/ и items/.
 import { app } from "../../scripts/app.js";
-import { el, btn } from "./lib/dom.js";
+import { el, btn, stopKeysBubbling } from "./lib/dom.js";
 import { Menu, menuMinHeight } from "./lib/menu.js";
 import { extractTags, createPalette } from "./lib/tagPalette.js";
 import { BLOCKS, TOP_MENU } from "./blocks/index.js";
 import { SHOT_MENU } from "./items/index.js";
 import { compile, migrate, rank } from "./core/compile.js";
-import { refTemplateStore } from "./core/stores.js";
+import { refTemplateStore, loraStore } from "./core/stores.js";
+
+// Триггер-слова включённых LoRA (поле «Триггер» в ноде LoRA Guide — js/loraGuide.js) — общий
+// store на файле (core/stores.js -> loraStore), поэтому читается здесь без связи нод графом.
+// Порядок — как в loraStore (там же порядок вкл/выкл для самой LoRA Guide).
+const triggerWords = () =>
+  loraStore.list().filter((l) => l.enabled && (l.trigger || "").trim()).map((l) => l.trigger.trim()).join(", ");
 
 const MENU_MIN_H = menuMinHeight(TOP_MENU, SHOT_MENU);
 
@@ -39,19 +45,32 @@ app.registerExtension({
       const copyBtn = btn("Копировать", "flex:1;");
       const presetBtn = btn("📋 Шаблон", "flex:1;");
       bar.append(addBtn, copyBtn, presetBtn);
+      // Отдельной строкой снизу — реже нужна и необратима (сносит весь набор блоков), поэтому
+      // не смешана с основной панелью и подкрашена предупреждающим цветом (как «выкл» у LoRA Guide).
+      const resetBtn = btn("Сбросить всё", "background:rgba(224,138,138,.08);border-color:rgba(224,138,138,.3);color:#e08a8a;");
+      resetBtn.onclick = () => {
+        if (!state.length) return;
+        if (!confirm("Удалить все блоки и начать заново? Отменить нельзя.")) return;
+        state = [];
+        rerender();
+      };
       const palette = createPalette(root, { onSizeChange: () => fit() });
-      mainView.append(list, palette.el, bar);
+      mainView.append(list, palette.el, bar, resetBtn);
       const menuView = el("div", "display:none;flex-direction:column;gap:6px;");
       root.append(mainView, menuView);
+      stopKeysBubbling(root);
 
       // --- контекст для блоков ---
       const fit = () => {
+        // LiteGraph растит ноду под новый размер, но не даёт уменьшиться без сброса — иначе
+        // сворачивание карточки не уменьшает окно ноды (разворачивание при этом работает как надо).
+        node.size[1] = 0;
         node.setSize([node.size[0], Math.max(root.scrollHeight + 70, 160)]);
         app.graph.setDirtyCanvas(true, true);
       };
       const save = () => {
         blocksW.value = JSON.stringify(state);
-        promptW.value = compile(state);
+        promptW.value = compile(state, { triggerWords: triggerWords() });
         palette.update(extractTags(state, (b) => BLOCKS[b.type]?.group === "ref"));
       };
       const render = () => {
@@ -125,7 +144,15 @@ app.registerExtension({
       // Секунды во всех блоках подрезаются под текущую duration и при загрузке, и при её изменении.
       const clampTimes = () => state.forEach((b) => BLOCKS[b.type].clamp?.(b, ctx.duration()));
       let lastDuration = ctx.duration();
+      let lastTrigger = triggerWords();
       const watch = setInterval(() => {
+        // LoRA Guide — отдельная нода: узнаём, что там включили/выключили LoRA или поменяли
+        // триггер-слово, только опросом общего store (без связи нод графом) — так же, как
+        // ниже отслеживается duration. save() тут достаточно, полный rerender() не нужен —
+        // список блоков не менялся, только текст в promptW.
+        const trigger = triggerWords();
+        if (trigger !== lastTrigger) { lastTrigger = trigger; save(); }
+
         if (ctx.duration() === lastDuration) return;
         // Длительность выросла: время, стоявшее на прежнем максимуме, тянется вслед за ней.
         if (ctx.duration() > lastDuration) {

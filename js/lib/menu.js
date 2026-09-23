@@ -1,4 +1,4 @@
-import { el, btn, small, BTN_H } from "./dom.js";
+import { el, btn, small, icon, ICONS, BTN_H } from "./dom.js";
 
 const DYNAMIC_COUNT = 8; // запас высоты под списки, длина которых заранее неизвестна
 
@@ -49,8 +49,17 @@ export class Menu {
   }
 
   #row(it, onPick) {
-    const label = (it.icon ? it.icon + "  " : "") + it.label + (it.children ? "  ›" : "");
-    const b = btn(label, "flex:1;");
+    // it.icon — имя из ICONS (lib/dom.js) рисуется настоящей SVG-иконкой; старые emoji-иконки,
+    // ещё не переведённые в этот набор, остаются текстовым префиксом (fallback), ничего не ломаем.
+    const known = it.icon && ICONS[it.icon];
+    const b = btn("", "flex:1;display:flex;align-items:center;gap:8px;justify-content:flex-start;text-align:left;");
+    if (known) b.append(icon(it.icon, { size: 14 }));
+    b.append(el(
+      "span",
+      "flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;",
+      (known ? "" : it.icon ? `${it.icon}  ` : "") + it.label
+    ));
+    if (it.children) b.append(el("span", "opacity:.5;flex-shrink:0;", "›"));
     b.onclick = () => {
       if (it.children || it.view) {
         this.stack.push({ items: it.children, view: it.view, onPick });

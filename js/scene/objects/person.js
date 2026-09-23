@@ -1,4 +1,4 @@
-import { el, btn, row, head, segmented } from "../../lib/dom.js";
+import { el, btn, row, card, segmented, CARD_COLORS } from "../../lib/dom.js";
 import { saveTemplateView } from "../saveTemplate.js";
 import { characterStore } from "../../shared/characters.js";
 import { outfitStore } from "../../shared/outfits.js";
@@ -33,7 +33,7 @@ const noun = (p) => (isAdult(p) ? (p.gender === "female" ? "woman" : "man") : p.
 export const personObject = {
   kind: "person",
   menu: {
-    icon: "👤", label: "Человек",
+    icon: "person", label: "Человек",
     children: [
       { label: "Женщина", make: () => newPerson("female") },
       { label: "Мужчина", make: () => newPerson("male") },
@@ -42,31 +42,33 @@ export const personObject = {
 
   render(p, i, ctx) {
     enforceAge(p);
-    const card = el("div", "display:flex;flex-direction:column;gap:6px;border:1px solid #666;border-radius:6px;padding:6px;");
-    card.append(head(`👤 ${GENDER_RU[p.gender]}`, ctx.getState(), i, ctx));
+    const body = [];
 
     const age = el("input", "width:70px;box-sizing:border-box;");
     age.type = "number"; age.min = "1"; age.max = "100";
     age.value = p.age;
     age.addEventListener("input", () => { p.age = Number(age.value) || 0; ctx.save(); });
     age.addEventListener("change", () => ctx.rerender()); // пересчитать доступные наборы
-    card.append(row(el("span", "min-width:110px;", "🎂 Возраст:"), age, el("span", "", "лет")));
+    body.push(row(el("span", "min-width:110px;", "Возраст:"), age, el("span", "", "лет")));
 
-    ATTRIBUTES.filter((a) => !a.adultOnly || isAdult(p)).forEach((a) => card.append(renderAttribute(a, p, ctx)));
-    card.append(row(el("span", "min-width:110px;", "🧭 Ориентация:"), segmented(p, "facing", FACING, ctx)));
-    card.append(renderClothes(p, ctx));
-    const save = btn("💾 Сохранить как персонажа");
+    ATTRIBUTES.filter((a) => !a.adultOnly || isAdult(p)).forEach((a) => body.push(renderAttribute(a, p, ctx)));
+    body.push(row(el("span", "min-width:110px;", "Ориентация:"), segmented(p, "facing", FACING, ctx)));
+    body.push(renderClothes(p, ctx));
+    const save = btn("Сохранить как персонажа");
     save.onclick = () => ctx.openView(saveTemplateView({
       store: characterStore, compileText: () => personObject.compile(p),
       namePlaceholder: "Имя персонажа (например: Аня в клетчатой рубашке)", saveLabel: "Сохранить персонажа",
     }));
-    const saveOutfit = btn("👗 Сохранить образ (только одежда)");
+    const saveOutfit = btn("Сохранить образ (только одежда)");
     saveOutfit.onclick = () => ctx.openView(saveTemplateView({
       store: outfitStore, compileText: () => outfitPhrase(p),
       namePlaceholder: "Название образа (например: Клетчатая рубашка и чёрная юбка)", saveLabel: "Сохранить образ",
     }));
-    card.append(save, saveOutfit);
-    return card;
+    body.push(save, saveOutfit);
+
+    return card(GENDER_RU[p.gender], ctx.getState(), i, ctx, body, {
+      sameKind: true, color: CARD_COLORS.ref, icon: "person", summary: `${p.age} лет`,
+    });
   },
 
   compile(p) {

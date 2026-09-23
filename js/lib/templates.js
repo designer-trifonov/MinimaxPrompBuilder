@@ -12,7 +12,7 @@ export function templateEntries(store, { make, newLabel, saveLabel, namePlacehol
       edit: templateForm(store, form, t), // ✏️ — та же форма, но с готовыми значениями
       onDelete: () => store.remove(t.id),
     })),
-    { icon: "➕", label: newLabel, view: templateForm(store, form) },
+    { icon: "plus", label: newLabel, view: templateForm(store, form) },
   ];
 }
 
@@ -29,7 +29,7 @@ export function groupedTemplateEntries(store, { make, newLabel, saveLabel, nameP
     groups[g].push(t);
   }
   return [
-    { icon: "➕", label: newLabel, view: templateForm(store, form) },
+    { icon: "plus", label: newLabel, view: templateForm(store, form) },
     ...order.map((g) => ({
       label: g,
       children: groups[g].map((t) => ({

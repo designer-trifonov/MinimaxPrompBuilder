@@ -16,8 +16,9 @@ const make = (t, ctx) => ({ t: "outfit", name: t.name, who: defaultSubject(ctx),
 
 export const outfitItem = {
   t: "outfit",
+  icon: "outfit",
   menu: {
-    icon: "👗", label: "Образ",
+    icon: "outfit", label: "Образ",
     children: () => [
       ...templateEntries(outfitStore, {
         make,
@@ -28,7 +29,7 @@ export const outfitItem = {
       { label: "Пустой элемент", make: (ctx) => make({ name: "Образ", text: "" }, ctx) },
     ],
   },
-  title: (it) => `👗 Образ: ${it.name ?? ""}`,
+  title: (it) => `Образ: ${it.name ?? ""}`,
   body: (it, ctx) => [
     row(el("span", "", "Субъект:"), textInput(it, "who", ctx, "150px")),
     textArea(it, ctx, 2),
