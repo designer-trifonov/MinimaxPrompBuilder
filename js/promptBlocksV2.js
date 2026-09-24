@@ -1,12 +1,22 @@
-// Точка входа новой ноды PromptBlocksV2 — регистрирует расширение в ComfyUI, подключает
-// system/bootstrap.js (новую систему) к DOM ноды и переключает главную/менюшную вьюхи.
-// Старую PromptBlocks (promptBlocks.js) не трогает.
 import { app } from "../../scripts/app.js";
-import { el, stopKeysBubbling } from "./lib/dom.js";
 import { initNode } from "./system/bootstrap.js";
 import { on } from "./system/eventBus.js";
-import { AddBlockListBuilder } from "./system/addBlockListBuilder.js";
-import { container as promptBlockList } from "./system/promptBlockOrderManager.js";
+
+const el = (tag, css = "", text = "") => {
+  const e = document.createElement(tag);
+  if (css) e.style.cssText = css;
+  if (text) e.textContent = text;
+  return e;
+};
+
+function stopKeysBubbling(root) {
+  const stop = (e) => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") e.stopPropagation();
+  };
+  root.addEventListener("keydown", stop);
+  root.addEventListener("keypress", stop);
+  root.addEventListener("keyup", stop);
+}
 
 app.registerExtension({
   name: "PromptBlocksV2",
@@ -26,8 +36,7 @@ app.registerExtension({
 
       const root = el("div", "display:flex;flex-direction:column;gap:6px;width:100%;box-sizing:border-box;");
       const mainView = el("div", "display:flex;flex-direction:column;gap:8px;");
-      const menuView = el("div", "display:none;flex-direction:column;gap:6px;");
-      root.append(mainView, menuView);
+      root.append(mainView);
       stopKeysBubbling(root);
 
       const fit = () => {
@@ -38,34 +47,19 @@ app.registerExtension({
 
       const rebuildMain = () => {
         mainView.innerHTML = "";
-        mainView.append(initNode().root, promptBlockList);
+        mainView.append(initNode().root);
       };
 
       const showMain = () => {
-        rebuildMain(); // главная панель пересобирается заново (например, обновить ленту пилюль)
-        menuView.innerHTML = "";
-        menuView.style.display = "none";
-        mainView.style.display = "flex";
-        fit();
-      };
-      const showMenu = (builtList) => {
-        menuView.innerHTML = "";
-        menuView.append(builtList);
-        mainView.style.display = "none";
-        menuView.style.display = "flex";
+        rebuildMain();
         fit();
       };
 
       rebuildMain();
       showMain();
 
-      // «+ Добавить блок» (mainMenuBuilder.js) шлёт "addBlock" без resolve — сами ловим и сами
-      // строим список через AddBlockListBuilder.build() напрямую.
-      on("addBlock", async () => showMenu(await AddBlockListBuilder.build()));
-      // «← Назад» (addBlockListBuilder.js) уже шлёт "showMainMenu" сам — просто возвращаемся.
       on("showMainMenu", () => showMain());
 
-      // Держим скрытое поле prompt в актуальном состоянии для Python-выхода ноды.
       on("promptText:changed", ({ text } = {}) => {
         if (promptW) promptW.value = text ?? "";
       });

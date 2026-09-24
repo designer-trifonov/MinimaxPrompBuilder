@@ -1,0 +1,4 @@
+[
+  { "id": "promptBlockReferenceVideoStructureFull", "name": "Сохранить структуру сцены целиком", "text": "the video's structure — motion, environment and characters — is used as the base for the new video" },
+  { "id": "promptBlockReferenceVideoStructureEnvOnly", "name": "Сохранить только помещение со сцены (убрать всех живых существ)", "text": "the scene's environment and structure are retained as the base, while all people and animals are removed from it" }
+]

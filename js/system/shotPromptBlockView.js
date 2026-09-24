@@ -1,12 +1,10 @@
+/*
 import { el } from "../lib/dom.js";
 import { THEME } from "../lib/theme.js";
 import { emit } from "./eventBus.js";
 import { buildBlockCardShell } from "./blockCardShell.js";
 import { registerBlock } from "./promptBlockOrderManager.js";
 
-// Шот — сам рисует свою карточку (с/по + текст + «Добавить в шот») и сам следит за своими
-// полями, шлёт promptBlock:update при любом изменении. Билдер (shotBlockBuilder.js) вызывает
-// это один раз при создании и больше не занимается этим блоком.
 let instanceCount = 0;
 
 export function buildShotPromptBlockView(template) {
@@ -36,8 +34,6 @@ export function buildShotPromptBlockView(template) {
 
   const addToShotBtn = el("button", "cursor:pointer;border-style:dashed;background:transparent;", "+ Добавить в шот");
   addToShotBtn.onclick = () => {
-    // Открываем список блоков заново и сразу разворачиваем в нём «Шот» — тот же самый список
-    // шаблонов, что и при первом создании, просто теперь добавляет в ЭТОТ шот.
     emit("addBlock", {
       resolve: (builtList) => {
         const shotRow = builtList.querySelector('[data-block-id="shotEvent"]');
@@ -49,3 +45,5 @@ export function buildShotPromptBlockView(template) {
   content.append(timeRow, textArea, addToShotBtn);
   registerBlock(id, buildBlockCardShell(id, "Шот", color, content));
 }
+
+*/

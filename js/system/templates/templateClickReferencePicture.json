@@ -1,0 +1,6 @@
+[
+  { "id": "templateClickReferencePictureHuman", "title": "Человек", "category": true, "default": true },
+  { "id": "templateClickReferencePictureOutfit", "title": "Одежда", "category": true, "default": true },
+  { "id": "templateClickReferencePictureRoom", "title": "Помещение", "category": true, "default": true },
+  { "id": "templateClickReferencePictureObject", "title": "Предмет", "category": true, "default": true }
+]

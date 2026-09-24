@@ -1,8 +1,13 @@
-import { el } from "../lib/dom.js";
+/*
 import { insertAtCursor } from "./cursorTracker.js";
 
-// Одна пилюля — цвет + название, сама вставляет свой текст в последнее сфокусированное поле
-// (cursorTracker.js), сама ничего больше не знает и никого не спрашивает.
+const el = (tag, css = "", text = "") => {
+  const e = document.createElement(tag);
+  if (css) e.style.cssText = css;
+  if (text) e.textContent = text;
+  return e;
+};
+
 export function buildBookmarkPillView(pill) {
   const b = el(
     "button",
@@ -18,3 +23,5 @@ export function buildBookmarkPillView(pill) {
 export function buildBookmarkPillViews(pills) {
   return pills.map(buildBookmarkPillView);
 }
+
+*/

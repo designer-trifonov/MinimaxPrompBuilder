@@ -1,12 +1,15 @@
-import { el } from "../lib/dom.js";
+/*
 import { on, emit } from "./eventBus.js";
 
-// Единственное место, куда попадают ВСЕ реально созданные блоки промпта (любого типа) — общий
-// список, чтобы «поднять/опустить» имело смысл между блоками разных типов сразу. Главное меню
-// (mainMenuBuilder.js) рисует только статичную панель — это внутреннее содержимое рисует,
-// перемещает и удаляет этот скрипт, по одному обезличенному событию "promptBlock:action".
+const el = (tag, css = "", text = "") => {
+  const e = document.createElement(tag);
+  if (css) e.style.cssText = css;
+  if (text) e.textContent = text;
+  return e;
+};
+
 export const container = el("div", "display:flex;flex-direction:column;gap:8px;");
-const elements = new Map(); // id -> DOM-элемент блока
+const elements = new Map();
 
 export function registerBlock(id, blockEl) {
   blockEl.dataset.promptId = id;
@@ -15,7 +18,6 @@ export function registerBlock(id, blockEl) {
   emitOrder();
 }
 
-// Порядок — реальный порядок в DOM (после перетаскивания/сдвига), не порядок регистрации.
 function emitOrder() {
   emit("promptBlock:reorder", { order: [...container.children].map((c) => c.dataset.promptId) });
 }
@@ -49,3 +51,5 @@ on("promptBlock:action", ({ id, action } = {}) => {
 });
 
 on("resetAll", () => clear());
+
+*/

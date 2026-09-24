@@ -1,12 +1,10 @@
+/*
 import { el } from "../lib/dom.js";
 import { THEME } from "../lib/theme.js";
 import { emit } from "./eventBus.js";
 import { buildBlockCardShell } from "./blockCardShell.js";
 import { registerBlock } from "./promptBlockOrderManager.js";
 
-// Референс — сам рисует свою карточку и сам следит за своим textarea, шлёт promptBlock:update
-// при изменении. Билдер (referenceBlockBuilder.js) вызывает это один раз при создании (считает
-// номера субъекта/носителя) и больше не занимается этим блоком.
 let subjectCount = 0;
 const refCountByMedia = { picture: 0, video: 0 };
 let instanceCount = 0;
@@ -36,9 +34,10 @@ export function buildReferencePromptBlockView(roleEntry) {
   registerBlock(id, buildBlockCardShell(id, `<Subject ${subjectN}> — ${roleEntry.name}`, color, content));
 }
 
-// Сброс счётчиков нумерации — вызывается билдером при resetAll.
 export function resetReferenceCounters() {
   subjectCount = 0;
   refCountByMedia.picture = 0;
   refCountByMedia.video = 0;
 }
+
+*/

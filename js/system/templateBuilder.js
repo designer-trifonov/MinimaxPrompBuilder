@@ -1,25 +1,24 @@
-import { el, btn } from "../lib/dom.js";
 import { on, emit } from "./eventBus.js";
 import { buildTemplateViews } from "./templateView.js";
 
-// Ловит события ЛЮБОГО уровня матрёшки — и блоков главного меню (visualStyleEvent/referenceEvent/
-// shotEvent/soundsEvent/musicEvent), и категорий ВНУТРИ них (person/outfit/link/frame/photo/camera/
-// clock/chat — подкатегории Шота). Ни блок (blockView.js), ни категория (templateView.js) сами
-// ничего не рисуют — только шлют СВОЁ событие с afterEl. ВСЮ остальную работу делает этот скрипт
-// сам: по id находит JSON-файл в system/templates/ с ИМЕНЕМ, равным этому id, грузит из него список
-// шаблонов, отрисовывает (через templateView.js) и сам вставляет/убирает результат — решает это по
-// СВОЕМУ состоянию (открыт список сейчас или нет), а не по указке того, кто прислал событие.
-// Один и тот же код на любой глубине — добавить ещё один уровень вложенности = дописать сюда id
-// и завести под него JSON-файл, ничего больше менять не нужно.
-const TEMPLATE_LIST_IDS = [
-  "visualStyleEvent", "referenceEvent", "shotEvent", "soundsEvent", "musicEvent",
-  "shotPerson", "shotOutfit", "shotLink", "shotFrame", "shotPhoto", "shotCamera", "shotClock", "shotChat",
-];
+const BTN_CSS = "appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;height:30px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#42454f;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:#dcdee3;";
 
-const cache = new Map(); // id -> Promise<список шаблонов> — не грузим один и тот же файл повторно
+const el = (tag, css = "", text = "") => {
+  const e = document.createElement(tag);
+  if (css) e.style.cssText = css;
+  if (text) e.textContent = text;
+  return e;
+};
+
+const btn = (text, css = "") => el("button", `${BTN_CSS}${css}`, text);
+
+const cache = new Map();
 function loadTemplates(id) {
   if (!cache.has(id)) {
-    cache.set(id, fetch(new URL(`./templates/${id}.json`, import.meta.url)).then((r) => r.json()));
+    cache.set(id, fetch(new URL(`./templates/${id}.json`, import.meta.url)).then((r) => {
+      if (!r.ok) throw new Error("no registry");
+      return r.json();
+    }));
   }
   return cache.get(id);
 }
@@ -28,8 +27,6 @@ function buildTemplateList(templates, blockId) {
   const box = el("div", "display:flex;flex-direction:column;gap:6px;margin-left:18px;");
   buildTemplateViews(templates, blockId).forEach((row) => box.append(row));
 
-  // «Создать новый шаблон» — плоская кнопка, сама ничего не рисует, только шлёт createTemplate
-  // (ловит templateView.js — та же форма, что и для редактирования, просто пустая).
   const createBtn = btn("+ Создать новый шаблон", "border-style:dashed;background:transparent;");
   createBtn.onclick = () => emit("createTemplate", { afterEl: createBtn, blockId });
   box.append(createBtn);
@@ -37,8 +34,6 @@ function buildTemplateList(templates, blockId) {
   return box;
 }
 
-// Ищет шаблон по ссылке во всех уже загруженных списках и вырезает его из массива —
-// нужно templateRegistry.js для удаления по id/ссылке.
 async function removeTemplate(template) {
   for (const promise of cache.values()) {
     const list = await promise;
@@ -51,8 +46,6 @@ async function removeTemplate(template) {
   return false;
 }
 
-// Находит шаблон по id во всех уже загруженных списках и обновляет заголовок/контент.
-// Не нашли (новый шаблон, id ещё нет) — создаём новую запись и кладём её в список blockId.
 async function saveTemplate({ id, title, content, blockId }) {
   if (id !== undefined) {
     for (const promise of cache.values()) {
@@ -71,16 +64,10 @@ async function saveTemplate({ id, title, content, blockId }) {
   return created;
 }
 
-// Сбрасывает состояние «что сейчас развёрнуто» — вызывается при backToMenu, когда список блоков
-// (а вместе с ним и все вставленные шаблоны) уже стёрт снаружи (addBlockListBuilder.clear()).
-// Без этого TemplateBuilder думал бы, что старые списки всё ещё вставлены, хотя их DOM уже нет.
 function reset() {
   inserted.clear();
 }
 
-// Живое обновление: если список этого blockId сейчас показан — перерисовывает его заново на
-// месте (тот же box, свежее содержимое из уже изменённого массива в кэше). Если не показан —
-// ничего не делает, обновлять нечего. Вызывается после saveTemplate/удаления.
 async function refresh(blockId) {
   const box = inserted.get(blockId);
   if (!box) return;
@@ -92,29 +79,33 @@ async function refresh(blockId) {
   box.append(createBtn);
 }
 
-// Для удаления: не всегда известно, какому blockId принадлежал шаблон, — обновляем все сейчас
-// показанные списки разом, дёшево (их обычно один-два одновременно открыто).
 async function refreshAll() {
   await Promise.all([...inserted.keys()].map(refresh));
 }
 
 export const TemplateBuilder = { loadTemplates, buildTemplateList, removeTemplate, saveTemplate, reset, refresh, refreshAll };
 
-const inserted = new Map(); // id -> вставленный сейчас элемент списка шаблонов (или его нет)
+const inserted = new Map();
 
-TEMPLATE_LIST_IDS.forEach((id) => {
-  on(id, async ({ afterEl } = {}) => {
+export function subscribe() {
+  on("templateClicked", async ({ id, afterEl, parentEl } = {}) => {
     const shown = inserted.get(id);
     if (shown) {
       shown.remove();
       inserted.delete(id);
       return;
     }
-    const templates = await loadTemplates(id);
+    let templates;
+    try {
+      templates = await loadTemplates(id);
+    } catch {
+      return;
+    }
     const box = buildTemplateList(templates, id);
-    afterEl?.after(box);
+    if (parentEl) parentEl.append(box);
+    else afterEl?.after(box);
     inserted.set(id, box);
   });
-});
 
-on("backToMenu", () => TemplateBuilder.reset());
+  on("backToMenu", () => TemplateBuilder.reset());
+}

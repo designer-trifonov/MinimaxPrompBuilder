@@ -1,11 +1,8 @@
+/*
 import { on, emit } from "./eventBus.js";
 
-// Ничего не шлёт, кроме результата copy/изменения текста — только ловит. Блоки сами сообщают
-// о себе: "promptBlock:update" (создали/изменили) — {id, blockId, text}; "promptBlock:remove" —
-// {id}; "promptBlock:reorder" (шлёт promptBlockOrderManager.js после ↑/↓/✕) — {order: [id,...]} —
-// реальный порядок в общем списке, не фиксированный по типу. Держит entries, собирает.
-let order = []; // порядок id, как в общем списке блоков
-const entries = new Map(); // id -> { blockId, text }
+let order = [];
+const entries = new Map();
 
 function compile() {
   return order
@@ -16,8 +13,6 @@ function compile() {
     .join("\n\n");
 }
 
-// Синхронный доступ к уже собранному промпту — нужен точке входа ноды (promptBlocksV2.js),
-// чтобы держать скрытое поле для Python в актуальном состоянии, не дожидаясь клика «Копировать».
 export function getPromptText() {
   return compile();
 }
@@ -52,6 +47,7 @@ on("copy", async () => {
   try {
     await navigator.clipboard.writeText(compile());
   } catch {
-    // буфер обмена недоступен (не https/не в фокусе) — молча игнорируем, как и старая система
   }
 });
+
+*/

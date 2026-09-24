@@ -1,0 +1,5 @@
+[
+  { "id": "promptBlockReferencePictureHumanFull", "name": "Сохранить внешность полностью", "text": "all of the subject's facial features and body build are fully preserved from the reference" },
+  { "id": "promptBlockReferencePictureHumanTraits", "name": "Сохранить только общие черты (возраст, телосложение, очертания лица)", "text": "only broad traits are carried over from the reference — approximate age, build, and distinctive facial features such as jaw shape and eye shape; the exact face and identity are not copied" },
+  { "id": "promptBlockReferencePictureHumanBuild", "name": "Сохранить только телосложение", "text": "only the body's external shape (contour, proportions and build) is retained from the reference — not the pose; the face and outfit are not copied" }
+]

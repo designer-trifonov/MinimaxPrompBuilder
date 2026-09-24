@@ -1,11 +1,19 @@
-import { el, btn } from "../lib/dom.js";
-import { THEME } from "../lib/theme.js";
 import { emit, on } from "./eventBus.js";
 
-// Строит строку одного шаблона — циклом, один и тот же код на любой шаблон (они все одинаковые):
-// заголовок + три кнопки одинаковой ширины (закладка/редактировать/удалить), иконки — из реестра
-// иконок по id (bookmark/edit/delete), не текстовым символом.
-const ACTION_BTN_WIDTH = 22; // одна и та же ширина у всех трёх кнопок
+const BTN_H = 30;
+const BTN_CSS = "appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#42454f;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:#dcdee3;";
+
+const el = (tag, css = "", text = "") => {
+  const e = document.createElement(tag);
+  if (css) e.style.cssText = css;
+  if (text) e.textContent = text;
+  return e;
+};
+
+const btn = (text, css = "", height = BTN_H) =>
+  el("button", `height:${height}px;${BTN_CSS}${css}`, text);
+
+const ACTION_BTN_WIDTH = 22;
 
 function buildIconBtn(iconId) {
   const b = btn("", "display:flex;align-items:center;justify-content:center;padding:0;", ACTION_BTN_WIDTH);
@@ -14,9 +22,6 @@ function buildIconBtn(iconId) {
   return b;
 }
 
-// Форма редактирования — рисует и разворачивает её сам templateView, никуда за этим не ходит:
-// данные уже есть в template (та же ссылка, что в реестре). «Сохранить» шлёт saveTemplate наружу
-// (это меняет реестр — чужая забота, templateEditor.js), «Отмена» просто закрывает форму, без событий.
 export function buildEditForm(template, close, blockId) {
   const box = el("div", "display:flex;flex-direction:column;gap:6px;padding:8px;margin-left:18px;");
   const titleInput = el("input", "width:100%;box-sizing:border-box;");
@@ -40,17 +45,9 @@ export function buildEditForm(template, close, blockId) {
 }
 
 export function buildTemplateView(template, blockId) {
-  const row = btn(
-    "",
-    "display:flex;align-items:center;gap:6px;justify-content:flex-start;text-align:left;",
-    THEME.heights.templateRow
-  );
+  const row = btn("", "display:flex;align-items:center;gap:6px;justify-content:flex-start;text-align:left;");
 
-  // Дефолтный шаблон (встроенная категория) — иконка слева по его собственному id из реестра
-  // иконок. У пользовательских шаблонов иконки пока нет — решим позже.
-  if (template.default) {
-    emit("icon:get", { id: template.id, size: 14, resolve: (iconEl) => row.append(iconEl) });
-  }
+  emit("icon:get", { id: template.icon, size: 14, resolve: (iconEl) => iconEl && row.append(iconEl) });
 
   row.append(el(
     "span",
@@ -58,36 +55,19 @@ export function buildTemplateView(template, blockId) {
     template.name ?? template.title ?? ""
   ));
 
-  // Категория (template.category — например «План кадра», «Камера» внутри Шота): не лист, клик
-  // не создаёт блок, а шлёт СВОЁ СОБСТВЕННОЕ событие (template.id), точно так же, как это делает
-  // blockView для блоков верхнего уровня — то же самое обезличенное событие, никакой спецлогики
-  // и никаких прямых вызовов. templateBuilder.js ловит его так же, как ловит id блоков — та же
-  // самая матрёшка, просто ещё на один уровень глубже, сколько угодно раз.
-  if (template.category) {
-    const arrow = el("span", "opacity:.5;flex-shrink:0;", "›");
-    row.append(arrow);
-    let isExpanded = false;
-    row.onclick = () => {
-      isExpanded = !isExpanded;
-      arrow.textContent = isExpanded ? "⌄" : "›";
-      emit(template.id, { afterEl: row });
-    };
-    return row;
-  }
+  row.onclick = () => emit("templateClicked", { id: template.id, afterEl: row });
 
-  // Клик по самой строке (не по ★/✏️/✕ — у них свой stopPropagation) — «взять этот шаблон и
-  // вставить его как настоящий блок в промпт».
-  row.onclick = () => emit("addBlockToMenu", { blockId, template });
-
-  const bookmarkBtn = buildIconBtn("bookmark");
+  let isBookmarked = !!template.bookmarked;
+  const bookmarkBtn = buildIconBtn(isBookmarked ? "bookmarkOn" : "bookmark");
   bookmarkBtn.onclick = (e) => {
     e.stopPropagation();
+    isBookmarked = !isBookmarked;
+    bookmarkBtn.innerHTML = "";
+    emit("icon:get", { id: isBookmarked ? "bookmarkOn" : "bookmark", size: 13, resolve: (iconEl) => bookmarkBtn.append(iconEl) });
     emit("template:bookmark", { template });
   };
   row.append(bookmarkBtn);
 
-  // Дефолтные шаблоны (template.default — встроенные категории вроде ролей референса или планов
-  // шота) нельзя редактировать/удалять — это не пользовательские данные. Только закладка.
   if (!template.default) {
     const deleteBtn = buildIconBtn("delete");
     deleteBtn.onclick = (e) => {
@@ -95,7 +75,6 @@ export function buildTemplateView(template, blockId) {
       emit("template:delete", { template });
     };
 
-    // «Редактировать» — не шлёт ничего наружу, сам локально разворачивает/сворачивает свою форму.
     let formEl = null;
     const editBtn = buildIconBtn("edit");
     editBtn.onclick = (e) => {
@@ -111,15 +90,10 @@ export function buildTemplateView(template, blockId) {
   return row;
 }
 
-// templates — список из TemplateBuilder (system/templateBuilder.js); один и тот же buildTemplateView
-// на каждый элемент, циклом.
 export function buildTemplateViews(templates, blockId) {
   return templates.map((t) => buildTemplateView(t, blockId));
 }
 
-// Кнопка «Создать новый шаблон» (в templateBuilder.js) — плоская, сама ничего не рисует, только
-// шлёт "createTemplate" с afterEl (после какого элемента вставлять). Ловит это здесь же —
-// та же форма, что и для редактирования, просто с пустым шаблоном.
 let createFormEl = null;
 on("createTemplate", ({ afterEl, blockId } = {}) => {
   if (createFormEl) { createFormEl.remove(); createFormEl = null; return; }

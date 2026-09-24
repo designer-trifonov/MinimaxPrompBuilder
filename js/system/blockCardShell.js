@@ -1,10 +1,8 @@
+/*
 import { el, small } from "../lib/dom.js";
 import { THEME } from "../lib/theme.js";
 import { emit } from "./eventBus.js";
 
-// Общая база всех PromptBlockView: цветная полоска слева, заголовок + ↑/↓/✕ сверху, уникальный
-// контент — снизу. ↑/↓/✕ не двигают и не удаляют ничего сами — только шлют ОДНО обезличенное
-// событие с id и действием; кто реально переставляет/удаляет — promptBlockOrderManager.js.
 export function buildBlockCardShell(id, title, color, contentEl) {
   const up = small("↑"), down = small("↓"), del = small("✕");
   up.onclick = () => emit("promptBlock:action", { id, action: "moveUp" });
@@ -31,3 +29,5 @@ export function buildBlockCardShell(id, title, color, contentEl) {
   wrap.append(stripe, body);
   return wrap;
 }
+
+*/

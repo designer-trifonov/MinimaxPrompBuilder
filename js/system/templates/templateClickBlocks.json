@@ -1,0 +1,7 @@
+[
+  { "id": "templateClickVisualStyle", "title": "Визуальный стиль", "default": true, "icon": "visualStyleEvent" },
+  { "id": "templateClickReference", "title": "Референс", "default": true, "icon": "referenceEvent" },
+  { "id": "templateClickShot", "title": "Шот", "default": true, "icon": "shotEvent" },
+  { "id": "templateClickSounds", "title": "Звуки", "default": true, "icon": "soundsEvent" },
+  { "id": "templateClickMusic", "title": "Музыка", "default": true, "icon": "musicEvent" }
+]

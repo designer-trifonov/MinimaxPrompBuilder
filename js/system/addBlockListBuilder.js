@@ -1,20 +1,21 @@
-import { el } from "../lib/dom.js";
+/*
 import { emit, on } from "./eventBus.js";
 import { buildBlockView } from "./blockView.js";
 
-// Ловит событие нажатия «Добавить блок» (шлёт system/mainMenuBuilder.js) и по JSON-конфигу
-// (blockListConfig.json — только {id, title} на каждый пункт, включая «Назад») строит список.
-// Сама отрисовка каждой строки — не его забота, это blockView.js (сам разворачивается, сам шлёт
-// своё событие). Этот скрипт только грузит конфиг, вызывает blockView на каждую запись и держит
-// свою зону, которую сам же может стереть.
+const el = (tag, css = "", text = "") => {
+  const e = document.createElement(tag);
+  if (css) e.style.cssText = css;
+  if (text) e.textContent = text;
+  return e;
+};
 
 let configPromise = null;
 function loadConfig() {
-  configPromise ??= fetch(new URL("./blockListConfig.json", import.meta.url)).then((r) => r.json());
+  configPromise ??= fetch(new URL("./templates/blocks.json", import.meta.url)).then((r) => r.json());
   return configPromise;
 }
 
-const container = el("div", "display:flex;flex-direction:column;gap:6px;"); // своя зона — сама её и стирает
+const container = el("div", "display:flex;flex-direction:column;gap:6px;");
 
 export const AddBlockListBuilder = {
   async build() {
@@ -33,8 +34,9 @@ on("addBlock", async ({ resolve } = {}) => {
   resolve?.(built);
 });
 
-// «Назад» → сами стираем свою зону (список блоков) и просим билдера главного меню перерисоваться.
 on("backToMenu", () => {
   AddBlockListBuilder.clear();
   emit("showMainMenu", {});
 });
+
+*/

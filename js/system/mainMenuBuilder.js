@@ -1,51 +1,55 @@
-import { el, btn } from "../lib/dom.js";
-import { THEME } from "../lib/theme.js";
 import { emit, on } from "./eventBus.js";
-import { loadBookmarkedPills } from "./bookmarkPillLoader.js";
-import { buildBookmarkPillViews } from "./bookmarkPillView.js";
 
-// Билдер базовых элементов главного меню — того, что постоянно находится на самой ноде
-// (не список блоков, а сама панель: тулбар «Добавить блок»/«Копировать»/«Шаблон»/«Сбросить всё»).
-// init() создаёт кнопки (текст+дизайн из THEME) и вешает по клику ОБЕЗЛИЧЕННОЕ событие в eventBus —
-// сама кнопка не знает и не делает никакой бизнес-логики, просто сообщает «нажали X» по id.
-// Реальную логику (что делать по каждому событию) навешивает тот, кто подписан через on(id, ...).
+const BTN_H = 30;
+const BTN_CSS = "appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;background:#42454f;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:#dcdee3;";
+
+const el = (tag, css = "", text = "") => {
+  const e = document.createElement(tag);
+  if (css) e.style.cssText = css;
+  if (text) e.textContent = text;
+  return e;
+};
+
+const btn = (text, css = "", height = BTN_H) =>
+  el("button", `height:${height}px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;${BTN_CSS}${css}`, text);
+
+const iconBtn = (iconId, text, css = "") => {
+  const b = btn("", `display:flex;align-items:center;justify-content:center;gap:6px;${css}`);
+  emit("icon:get", { id: iconId, size: 14, resolve: (iconEl) => b.append(iconEl) });
+  b.append(el("span", "", text));
+  return b;
+};
+
+let currentRoot = null;
+
 export const MainMenuBuilder = {
   init() {
     const root = el("div", "display:flex;flex-direction:column;gap:6px;");
-
-    // Лента пилюль-закладок — сверху, для удобства (быстрая вставка без похода в меню блоков).
-    const pillsRow = el("div", "display:flex;flex-wrap:wrap;gap:6px;");
-    loadBookmarkedPills().then((pills) => {
-      pillsRow.innerHTML = "";
-      buildBookmarkPillViews(pills).forEach((pill) => pillsRow.append(pill));
-      pillsRow.style.display = pills.length ? "flex" : "none";
-    });
-    root.append(pillsRow);
+    currentRoot = root;
 
     const bar = el("div", "display:flex;gap:6px;");
-    const addBtn = btn("+ Добавить блок", "flex:2;", THEME.heights.addBlock);
-    const copyBtn = btn("Копировать", "flex:1;", THEME.heights.copy);
-    const presetBtn = btn("📋 Шаблон", "flex:1;", THEME.heights.template);
+    const addBtn = iconBtn("plus", "Добавить блок", "flex:2;");
+    const copyBtn = iconBtn("copy", "Копировать", "flex:1;");
+    const presetBtn = iconBtn("template", "Шаблон", "flex:1;");
     bar.append(addBtn, copyBtn, presetBtn);
 
-    // Отдельной строкой снизу — реже нужна и необратима (сносит весь набор блоков), поэтому
-    // не смешана с основной панелью и подкрашена предупреждающим цветом (как «выкл» у LoRA Guide).
-    const resetBtn = btn(
-      "Сбросить всё",
-      `background:${THEME.status.resetBg};border-color:${THEME.status.resetBorder};color:${THEME.status.offText};`,
-      THEME.heights.resetAll
-    );
+    const resetBtn = btn("Сбросить всё", "background:rgba(224,138,138,.08);border-color:rgba(224,138,138,.3);color:#e08a8a;");
 
-    // Четыре события: "addBlock", "copy", "template", "resetAll" — по одному на кнопку.
-    addBtn.onclick = () => emit("addBlock", {});
+    addBtn.onclick = () => emit("templateClicked", { id: "templateClickBlocks", parentEl: currentRoot });
     copyBtn.onclick = () => emit("copy", {});
     presetBtn.onclick = () => emit("template", {});
     resetBtn.onclick = () => emit("resetAll", {});
 
     root.append(bar, resetBtn);
-    return { root, bar, addBtn, copyBtn, presetBtn, resetBtn, pillsRow };
+    return { root, bar, addBtn, copyBtn, presetBtn, resetBtn };
+  },
+  clear() {
+    if (currentRoot) currentRoot.innerHTML = "";
   },
 };
 
-// «Назад» из списка блоков стёр себя и попросил показать главное меню — пересобираем панель заново.
 on("showMainMenu", ({ resolve } = {}) => resolve?.(MainMenuBuilder.init()));
+
+on("templateClicked", ({ id } = {}) => {
+  if (id === "templateClickBlocks") MainMenuBuilder.clear();
+});
