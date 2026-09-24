@@ -1,7 +1,7 @@
 [
-  { "id": "templateClickVisualStyle", "title": "Визуальный стиль", "default": true, "icon": "visualStyleEvent", "color": "#e0a53f" },
-  { "id": "templateClickReference", "title": "Референс", "default": true, "icon": "referenceEvent", "color": "#4d7bf3" },
-  { "id": "templateClickShot", "title": "Шот", "default": true, "icon": "shotEvent", "color": "#4bbf8a" },
-  { "id": "templateClickSounds", "title": "Звуки", "default": true, "icon": "soundsEvent", "color": "#b47ecf" },
-  { "id": "templateClickMusic", "title": "Музыка", "default": true, "icon": "musicEvent", "color": "#cf7ea0" }
+  { "id": "templateClickVisualStyle", "title": "Визуальный стиль", "category": true, "default": true, "icon": "visualStyleEvent", "color": "#e0a53f" },
+  { "id": "templateClickReference", "title": "Референс", "category": true, "default": true, "icon": "referenceEvent", "color": "#4d7bf3" },
+  { "id": "templateClickShot", "title": "Шот", "category": true, "default": true, "icon": "shotEvent", "color": "#4bbf8a" },
+  { "id": "templateClickSounds", "title": "Звуки", "category": true, "default": true, "icon": "soundsEvent", "color": "#b47ecf" },
+  { "id": "templateClickMusic", "title": "Музыка", "category": true, "default": true, "icon": "musicEvent", "color": "#cf7ea0" }
 ]

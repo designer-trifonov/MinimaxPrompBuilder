@@ -26,9 +26,10 @@ export function ready() {
 }
 
 export function subscribe() {
-  on("template:bookmark", ({ template } = {}) => {
+  on("template:bookmark", ({ template, blockId } = {}) => {
     if (!template) return;
     template.bookmarked = !template.bookmarked;
+    if (blockId) TemplateBuilder.persist(blockId);
     readyPromise = refresh();
   });
   readyPromise = refresh();

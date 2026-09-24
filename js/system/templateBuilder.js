@@ -1,5 +1,6 @@
 import { on, emit } from "./eventBus.js";
 import { buildTemplateViews } from "./templateView.js";
+import { userFileBackend } from "./serverBackend.js";
 
 const BTN_CSS = "appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;height:30px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#42454f;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:#dcdee3;";
 
@@ -15,12 +16,21 @@ const btn = (text, css = "") => el("button", `${BTN_CSS}${css}`, text);
 const cache = new Map();
 function loadTemplates(id) {
   if (!cache.has(id)) {
-    cache.set(id, fetch(new URL(`./templates/${id}.json`, import.meta.url)).then((r) => {
+    cache.set(id, (async () => {
+      const stored = await userFileBackend(`PromptBlocks/${id}.json`).read();
+      if (stored) return stored;
+      const r = await fetch(new URL(`./templates/${id}.json`, import.meta.url));
       if (!r.ok) throw new Error("no registry");
       return r.json();
-    }));
+    })());
   }
   return cache.get(id);
+}
+
+async function persist(blockId) {
+  if (!cache.has(blockId)) return;
+  const list = await cache.get(blockId);
+  await userFileBackend(`PromptBlocks/${blockId}.json`).write(list);
 }
 
 function buildTemplateList(templates, blockId) {
@@ -35,11 +45,12 @@ function buildTemplateList(templates, blockId) {
 }
 
 async function removeTemplate(template) {
-  for (const promise of cache.values()) {
+  for (const [blockId, promise] of cache.entries()) {
     const list = await promise;
     const idx = list.indexOf(template);
     if (idx !== -1) {
       list.splice(idx, 1);
+      await persist(blockId);
       return true;
     }
   }
@@ -48,12 +59,13 @@ async function removeTemplate(template) {
 
 async function saveTemplate({ id, title, content, blockId }) {
   if (id !== undefined) {
-    for (const promise of cache.values()) {
+    for (const [ownBlockId, promise] of cache.entries()) {
       const list = await promise;
       const found = list.find((t) => t.id === id);
       if (found) {
         found.name = title;
         found.text = content;
+        await persist(ownBlockId);
         return found;
       }
     }
@@ -61,6 +73,7 @@ async function saveTemplate({ id, title, content, blockId }) {
   const list = await loadTemplates(blockId);
   const created = { id: `tpl_${Date.now().toString(36)}`, name: title, text: content };
   list.push(created);
+  await persist(blockId);
   return created;
 }
 
@@ -84,7 +97,7 @@ async function refreshAll() {
   await Promise.all([...inserted.keys()].map(refresh));
 }
 
-export const TemplateBuilder = { loadTemplates, buildTemplateList, removeTemplate, saveTemplate, reset, refresh, refreshAll };
+export const TemplateBuilder = { loadTemplates, buildTemplateList, removeTemplate, saveTemplate, reset, refresh, refreshAll, persist };
 
 const inserted = new Map();
 
@@ -108,10 +121,19 @@ export function subscribe() {
       templates = [];
     }
     const box = buildTemplateList(templates, id);
-    if (parentEl) parentEl.append(box);
-    else afterEl?.after(box);
+    if (parentEl) {
+      const backBtn = btn("← Назад", "align-self:flex-start;");
+      backBtn.onclick = () => emit("backToMenu", {});
+      box.prepend(backBtn);
+      parentEl.append(box);
+    } else {
+      afterEl?.after(box);
+    }
     inserted.set(id, box);
   });
 
-  on("backToMenu", () => TemplateBuilder.reset());
+  on("backToMenu", () => {
+    TemplateBuilder.reset();
+    emit("showMainMenu", {});
+  });
 }

@@ -60,16 +60,18 @@ export function buildTemplateView(template, blockId) {
 
   row.onclick = () => emit("templateClicked", { id: template.id, afterEl: row, blockId });
 
-  let isBookmarked = !!template.bookmarked;
-  const bookmarkBtn = buildIconBtn(isBookmarked ? "bookmarkOn" : "bookmark");
-  bookmarkBtn.onclick = (e) => {
-    e.stopPropagation();
-    isBookmarked = !isBookmarked;
-    bookmarkBtn.innerHTML = "";
-    emit("icon:get", { id: isBookmarked ? "bookmarkOn" : "bookmark", size: 13, resolve: (iconEl) => bookmarkBtn.append(iconEl) });
-    emit("template:bookmark", { template });
-  };
-  row.append(bookmarkBtn);
+  if (!template.category) {
+    let isBookmarked = !!template.bookmarked;
+    const bookmarkBtn = buildIconBtn(isBookmarked ? "bookmarkOn" : "bookmark");
+    bookmarkBtn.onclick = (e) => {
+      e.stopPropagation();
+      isBookmarked = !isBookmarked;
+      bookmarkBtn.innerHTML = "";
+      emit("icon:get", { id: isBookmarked ? "bookmarkOn" : "bookmark", size: 13, resolve: (iconEl) => bookmarkBtn.append(iconEl) });
+      emit("template:bookmark", { template, blockId });
+    };
+    row.append(bookmarkBtn);
+  }
 
   if (!template.default) {
     const deleteBtn = buildIconBtn("delete");
