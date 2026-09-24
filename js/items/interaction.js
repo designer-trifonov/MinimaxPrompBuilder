@@ -2,18 +2,21 @@ import { el, row, textInput, textArea } from "../lib/dom.js";
 import { templateEntries } from "../lib/templates.js";
 import { interactionStore } from "../core/stores.js";
 import { makeRef } from "../blocks/refImage.js";
+import { on } from "../system/eventBus.js";
 
 // Связь референсов: готовая фраза с местами {A} и {B} («{A} wears the outfit from {B}»).
 // A и B — субъекты (<Subject 1>, <Subject 2>); их можно менять и заполнять фишками.
-const make = (t) => ({ t: "interaction", name: t.name, tpl: t.text, a: "<Subject 1>", b: "<Subject 2>", text: "" });
-
 const fill = (it) => (it.tpl || "").replaceAll("{A}", (it.a || "").trim()).replaceAll("{B}", (it.b || "").trim());
 
 // Роль B по смыслу фразы: «outfit» → одежда, «environment» → помещение, «object» → предмет.
 const roleOfB = (tpl) => (/outfit/i.test(tpl) ? "outfit" : /environment/i.test(tpl) ? "environment" : /object/i.test(tpl) ? "object" : "person");
 
-export const interactionItem = {
+export const InteractionBlockBuilder = {
   t: "interaction",
+  build({ payload, resolve }) {
+    const t = payload?.template ?? { name: "Связь", text: "{A} ... {B}" };
+    resolve({ t: "interaction", name: t.name, tpl: t.text, a: "<Subject 1>", b: "<Subject 2>", text: "" });
+  },
   // При добавлении связи заводит недостающие референс-блоки для <Subject N> из A и B (A — человек, B — по фразе).
   onAdd(it, shot, ctx) {
     const state = ctx.getState();
@@ -27,12 +30,12 @@ export const interactionItem = {
     icon: "link", label: "Связь референсов",
     children: () => [
       ...templateEntries(interactionStore, {
-        make,
+        emitId: "interaction",
         newLabel: "Новая связь", saveLabel: "Сохранить связь",
         namePlaceholder: "Название (например: Одеть в одежду с референса)",
         textPlaceholder: "Фраза с {A} и {B}, например: {A} wears the outfit from {B}",
       }),
-      { label: "Пустой элемент", make: () => make({ name: "Связь", text: "{A} ... {B}" }) },
+      { label: "Пустой элемент", emitId: "interaction" },
     ],
   },
   title: (it) => `${it.name ?? "Связь"}`,
@@ -49,3 +52,4 @@ export const interactionItem = {
   },
   compile: (it) => [fill(it).trim(), (it.text || "").trim()].filter(Boolean).join(" "),
 };
+on(InteractionBlockBuilder.t, InteractionBlockBuilder.build);

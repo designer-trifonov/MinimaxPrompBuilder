@@ -1,6 +1,8 @@
 import { el, btn, row, card, numInput, small, icon, CARD_COLORS } from "../lib/dom.js";
+import { THEME } from "../lib/theme.js";
 import { stamp } from "../lib/time.js";
 import { ITEMS, SHOT_MENU } from "../items/index.js";
+import { on } from "../system/eventBus.js";
 
 const lastShotEnd = (state) => {
   const shots = state.filter((b) => b.type === "shot");
@@ -24,13 +26,13 @@ function renderItem(shot, k, ctx) {
   // Иконка — из spec.icon (имя в ICONS, lib/dom.js), не из текста заголовка: title() теперь
   // возвращает только текст (см. items/*.js), иконка отдельным полем — нейтрально-серая здесь
   // (в отличие от цветных иконок карточек верхнего уровня — эти строки все на одном общем фоне).
-  const iconEl = spec.icon ? icon(spec.icon, { size: 13, color: "#9a9ca3" }) : el("span");
+  const iconEl = spec.icon ? icon(spec.icon, { size: 13, color: THEME.text.muted }) : el("span");
   const label = el(
     "span",
-    "font-size:12.5px;color:#d6d8dc;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;",
+    `font-size:12.5px;color:${THEME.text.itemLabel};flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;`,
     spec.title(it)
   );
-  const chevron = el("span", "font-size:12px;color:#75787f;flex-shrink:0;width:10px;text-align:center;", collapsed ? "›" : "⌄");
+  const chevron = el("span", `font-size:12px;color:${THEME.text.mutedDim};flex-shrink:0;width:10px;text-align:center;`, collapsed ? "›" : "⌄");
 
   const up = small("↑"), dn = small("↓"), del = small("✕");
   [up, dn, del].forEach((x) => (x.style.cssText += "opacity:.4;font-size:10px;padding:1px 5px;"));
@@ -58,20 +60,20 @@ function renderItem(shot, k, ctx) {
     ctx.fit();
   };
 
-  const box = el("div", "display:flex;flex-direction:column;background:#1c1e22;border:1px solid rgba(255,255,255,.04);border-radius:8px;");
+  const box = el("div", `display:flex;flex-direction:column;background:${THEME.surface.nested};border:1px solid ${THEME.border.nested};border-radius:8px;`);
   box.append(titleRow, body);
   return box;
 }
 
-export const shotBlock = {
+export const ShotBlockBuilder = {
   type: "shot",
-  menu: {
-    icon: "photo", label: "Шот",
-    // Начало берётся из конца предыдущего шота, конец — длительность видео.
-    make: (ctx) => {
-      const d = ctx.duration();
-      return { type: "shot", start: Math.min(lastShotEnd(ctx.getState()), d), end: d, items: [] };
-    },
+  menu: { icon: "photo", label: "Шот", emitId: "shot" },
+
+  // build — билдер блока «Шот» для главного меню («+ Добавить блок»). Начало берётся из конца
+  // предыдущего шота, конец — длительность видео.
+  build({ ctx, resolve }) {
+    const d = ctx.duration();
+    resolve({ type: "shot", start: Math.min(lastShotEnd(ctx.getState()), d), end: d, items: [] });
   },
 
   // При уменьшении длительности видео подрезает секунды шота и его элементов до максимума.
@@ -84,7 +86,7 @@ export const shotBlock = {
   render(b, i, ctx) {
     const items = el("div", "display:flex;flex-direction:column;gap:6px;");
     b.items.forEach((_, k) => items.append(renderItem(b, k, ctx)));
-    const add = btn("+ Добавить в шот", "border-style:dashed;background:transparent;color:#999;");
+    const add = btn("+ Добавить в шот", `border-style:dashed;background:transparent;color:${THEME.text.faintAlt};`);
     add.onclick = () =>
       ctx.openMenu(SHOT_MENU, (item) => {
         ITEMS[item.t].onAdd?.(item, b, ctx); // элемент может подстроиться под шот (например, секунды действия)
@@ -106,3 +108,4 @@ export const shotBlock = {
     return shotNumber === 1 ? `[Shot 1] ${body}` : `[Shot ${shotNumber}] At ${stamp(b.start)}, ${body}`;
   },
 };
+on(ShotBlockBuilder.type, ShotBlockBuilder.build);

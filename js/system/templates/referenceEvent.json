@@ -1,0 +1,11 @@
+[
+  { "id": "person", "name": "Человек", "media": "picture", "default": true },
+  { "id": "outfit", "name": "Одежда", "media": "picture", "default": true },
+  { "id": "object", "name": "Предмет", "media": "picture", "default": true },
+  { "id": "environment", "name": "Помещение / фон", "media": "picture", "default": true },
+  { "id": "other", "name": "Другое", "media": "picture", "default": true },
+  { "id": "motion", "name": "Движение / хореография", "media": "video", "default": true },
+  { "id": "character", "name": "Персонаж(и)", "media": "video", "default": true },
+  { "id": "style", "name": "Стиль и свет", "media": "video", "default": true },
+  { "id": "structure", "name": "Структура сцены целиком", "media": "video", "default": true }
+]

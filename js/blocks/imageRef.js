@@ -2,7 +2,7 @@ import { makeTextBlock } from "./textBlock.js";
 
 // Только для модели image-to-video: сообщает, что загруженная картинка — кадр на 0.00 с.
 // Официальная вводная строка MiniMax H3; идёт в самое начало промпта, текст можно дописывать.
-export const imageRefBlock = makeTextBlock({
+export const ImageRefBlockBuilder = makeTextBlock({
   type: "i2v",
   icon: "📎",
   label: "Первый кадр (image-to-video)",

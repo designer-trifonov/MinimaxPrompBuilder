@@ -1,20 +1,20 @@
 // Реестр блоков верхнего уровня. Порядок здесь = порядок в меню «Добавить блок».
-// Новый блок: создай файл в blocks/ (type, menu, render, compile) и добавь в список.
+// Новый блок: создай файл в blocks/ (BlockBuilder: type, build, menu, render, compile) и добавь в список.
 // Блоки с одинаковым group собираются в одну кнопку с подпунктами (см. GROUPS).
-import { imageRefBlock } from "./imageRef.js";
-import { lastRefBlock } from "./lastRef.js";
-import { firstLastRefBlock } from "./firstLastRef.js";
-import { refImageBlock } from "./refImage.js";
-import { styleBlock } from "./style.js";
-import { shotBlock } from "./shot.js";
-import { soundBlock } from "./sound.js";
-import { musicBlock } from "./music.js";
+import { ImageRefBlockBuilder } from "./imageRef.js";
+import { LastRefBlockBuilder } from "./lastRef.js";
+import { FirstLastRefBlockBuilder } from "./firstLastRef.js";
+import { RefBlockBuilder } from "./refImage.js";
+import { StyleBlockBuilder } from "./style.js";
+import { ShotBlockBuilder } from "./shot.js";
+import { SoundBlockBuilder } from "./sound.js";
+import { MusicBlockBuilder } from "./music.js";
 
 const GROUPS = { ref: { icon: "📎", label: "Референс" } };
 
 export const BLOCK_LIST = [
-  styleBlock, imageRefBlock, lastRefBlock, firstLastRefBlock, refImageBlock,
-  shotBlock, soundBlock, musicBlock,
+  StyleBlockBuilder, ImageRefBlockBuilder, LastRefBlockBuilder, FirstLastRefBlockBuilder, RefBlockBuilder,
+  ShotBlockBuilder, SoundBlockBuilder, MusicBlockBuilder,
 ];
 export const BLOCKS = Object.fromEntries(BLOCK_LIST.map((b) => [b.type, b]));
 

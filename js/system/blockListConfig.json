@@ -1,0 +1,8 @@
+[
+  { "id": "back", "title": "Назад" },
+  { "id": "visualStyleEvent", "title": "Визуальный стиль" },
+  { "id": "referenceEvent", "title": "Референс" },
+  { "id": "shotEvent", "title": "Шот" },
+  { "id": "soundsEvent", "title": "Звуки" },
+  { "id": "musicEvent", "title": "Музыка" }
+]

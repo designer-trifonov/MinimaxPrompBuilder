@@ -2,11 +2,12 @@ import { el, btn, row, card, segmented, CARD_COLORS } from "../../lib/dom.js";
 import { saveTemplateView } from "../saveTemplate.js";
 import { characterStore } from "../../shared/characters.js";
 import { outfitStore } from "../../shared/outfits.js";
-import { ATTRIBUTES } from "../attributes.js";
+import { ATTRIBUTES_DATA } from "../attributes.js";
 import { renderAttribute } from "../attributeRow.js";
 import { renderClothes } from "../clothingSection.js";
 import { isAdult } from "../rules.js";
 import { article, andList } from "../phrase.js";
+import { on } from "../../system/eventBus.js";
 
 const GENDER_RU = { female: "Женщина", male: "Мужчина" };
 const newPerson = (gender) => ({ kind: "person", gender, age: 30, attrs: {}, clothes: [], facing: "" });
@@ -18,7 +19,7 @@ const FACING_PHRASE = { front: "facing the viewer", profile: "in profile", back:
 // Убирает то, что недоступно по возрасту (набор «телосложение», бельё и т.п.).
 function enforceAge(p) {
   if (isAdult(p)) return;
-  ATTRIBUTES.filter((a) => a.adultOnly).forEach((a) => delete p.attrs[a.key]);
+  ATTRIBUTES_DATA.filter((a) => a.adultOnly).forEach((a) => delete p.attrs[a.key]);
   p.clothes = p.clothes.filter((c) => c.adult !== "18+" && c.cat !== "underwear");
 }
 
@@ -30,14 +31,19 @@ const outfitPhrase = (p) => {
 
 const noun = (p) => (isAdult(p) ? (p.gender === "female" ? "woman" : "man") : p.gender === "female" ? "girl" : "boy");
 
-export const personObject = {
+export const PersonBlockBuilder = {
   kind: "person",
   menu: {
     icon: "person", label: "Человек",
     children: [
-      { label: "Женщина", make: () => newPerson("female") },
-      { label: "Мужчина", make: () => newPerson("male") },
+      { label: "Женщина", emitId: "person", payload: { gender: "female" } },
+      { label: "Мужчина", emitId: "person", payload: { gender: "male" } },
     ],
+  },
+
+  // Билдер объекта «Человек» для главного меню Scene Builder («+ Добавить объект»).
+  build({ payload, resolve }) {
+    resolve(newPerson(payload.gender));
   },
 
   render(p, i, ctx) {
@@ -51,12 +57,12 @@ export const personObject = {
     age.addEventListener("change", () => ctx.rerender()); // пересчитать доступные наборы
     body.push(row(el("span", "min-width:110px;", "Возраст:"), age, el("span", "", "лет")));
 
-    ATTRIBUTES.filter((a) => !a.adultOnly || isAdult(p)).forEach((a) => body.push(renderAttribute(a, p, ctx)));
+    ATTRIBUTES_DATA.filter((a) => !a.adultOnly || isAdult(p)).forEach((a) => body.push(renderAttribute(a, p, ctx)));
     body.push(row(el("span", "min-width:110px;", "Ориентация:"), segmented(p, "facing", FACING, ctx)));
     body.push(renderClothes(p, ctx));
     const save = btn("Сохранить как персонажа");
     save.onclick = () => ctx.openView(saveTemplateView({
-      store: characterStore, compileText: () => personObject.compile(p),
+      store: characterStore, compileText: () => PersonBlockBuilder.compile(p),
       namePlaceholder: "Имя персонажа (например: Аня в клетчатой рубашке)", saveLabel: "Сохранить персонажа",
     }));
     const saveOutfit = btn("Сохранить образ (только одежда)");
@@ -74,7 +80,7 @@ export const personObject = {
   compile(p) {
     enforceAge(p);
     const sel = (k) => (p.attrs[k]?.text || "").trim();
-    const adj = ATTRIBUTES.filter((a) => a.slot === "adj").map((a) => sel(a.key)).filter(Boolean);
+    const adj = ATTRIBUTES_DATA.filter((a) => a.slot === "adj").map((a) => sel(a.key)).filter(Boolean);
     const who = [p.age ? `${p.age}-year-old` : "", ...adj, noun(p)].filter(Boolean).join(" ");
 
     const hair = [sel("hair_style"), sel("hair_color")].filter(Boolean).join(" ");
@@ -88,3 +94,4 @@ export const personObject = {
     return s;
   },
 };
+on(PersonBlockBuilder.kind, PersonBlockBuilder.build);

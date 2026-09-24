@@ -1,7 +1,7 @@
 import { makeTemplateItem } from "./templateItem.js";
 import { frameStore } from "../core/stores.js";
 
-export const frameItem = makeTemplateItem({
+export const FrameBlockBuilder = makeTemplateItem({
   t: "frame", icon: "frame", label: "План кадра", store: frameStore, skipUnchanged: true,
   newLabel: "Новый кадр", saveLabel: "Сохранить как шаблон кадра",
   namePlaceholder: "Название (например: Крупный план)",

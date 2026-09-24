@@ -1,0 +1,22 @@
+[
+  {
+    "id": "seed00",
+    "name": "Людная улица",
+    "text": "Busy city street with people talking around, passing traffic and general urban bustle"
+  },
+  {
+    "id": "seed01",
+    "name": "Людное помещение",
+    "text": "Crowded indoor space filled with many people talking at once"
+  },
+  {
+    "id": "seed02",
+    "name": "Шум улицы из окна",
+    "text": "Muffled street sounds from outside a closed window, distant traffic and faint voices"
+  },
+  {
+    "id": "seed03",
+    "name": "Дождь за окном",
+    "text": "Steady rain heard from indoors, raindrops tapping on the windowsill and glass"
+  }
+]

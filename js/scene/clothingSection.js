@@ -1,4 +1,5 @@
 import { el, btn, small, icon } from "../lib/dom.js";
+import { THEME } from "../lib/theme.js";
 import { templateEntries } from "../lib/templates.js";
 import { CLOTH_CATEGORIES, OUTFITS_CAT } from "./clothing.js";
 import { outfitStore } from "../shared/outfits.js";
@@ -12,12 +13,8 @@ const outfitsMenu = {
   children: () => {
     const list = outfitStore.list();
     return list.length
-      ? list.map((t) => ({
-          label: t.name,
-          make: () => ({ cat: OUTFITS_CAT, name: t.name, text: t.text.replace(/^\s*wearing\s+/i, ""), color: "", colorName: "" }),
-          onDelete: () => outfitStore.remove(t.id),
-        }))
-      : [{ label: "Пока пусто — сохрани образ кнопкой «👗» ниже", make: () => null }];
+      ? list.map((t) => ({ label: t.name, emitId: "scene_outfit", payload: { template: t }, onDelete: () => outfitStore.remove(t.id) }))
+      : [{ label: "Пока пусто — сохрани образ кнопкой «👗» ниже", emitId: "scene_outfit" }];
   },
 };
 
@@ -28,7 +25,7 @@ const clothesMenu = (person) => () => [
     label: c.label,
     children: () =>
       templateEntries(c.store, {
-        make: (t) => ({ cat: c.key, name: t.name, text: t.text, color: "", colorName: "", adult: t.adult }),
+        emitId: `scene_cloth_${c.key}`, // билдер зарегистрирован в scene/clothingBlockBuilders.js
         filter: (t) => allowed(t, person),
         newLabel: "Новая вещь",
         saveLabel: "Сохранить как вещь",
@@ -41,9 +38,9 @@ const clothesMenu = (person) => () => [
 
 // Цвет выбирается в конце: список цветов — тоже шаблоны.
 const colorMenu = () => () => [
-  { label: "Без цвета", make: () => ({ name: "", text: "" }) },
+  { label: "Без цвета", emitId: "scene_color" },
   ...templateEntries(colorStore, {
-    make: (t) => ({ name: t.name, text: t.text }),
+    emitId: "scene_color",
     newLabel: "Новый цвет",
     saveLabel: "Сохранить как цвет",
     namePlaceholder: "Название цвета (например: Красный)",
@@ -57,7 +54,7 @@ export function renderClothes(person, ctx) {
   heading.append(icon("outfit", { size: 14 }), el("span", "", "Одежда"));
   box.append(heading);
   person.clothes.forEach((item, k) => {
-    const r = el("div", "display:flex;gap:4px;align-items:center;flex-wrap:wrap;background:#1c1e22;border-radius:8px;padding:5px 8px;");
+    const r = el("div", `display:flex;gap:4px;align-items:center;flex-wrap:wrap;background:${THEME.surface.nested};border-radius:8px;padding:5px 8px;`);
     r.append(el("span", "flex:1;min-width:120px;", item.name));
     const del = small("✕");
     del.onclick = () => { person.clothes.splice(k, 1); ctx.rerender(); };

@@ -2,7 +2,7 @@ import { makeTextBlock } from "./textBlock.js";
 import { soundStore } from "../core/stores.js";
 import { CARD_COLORS } from "../lib/dom.js";
 
-export const soundBlock = makeTextBlock({
+export const SoundBlockBuilder = makeTextBlock({
   type: "sound",
   icon: "speaker",
   label: "Звуки",

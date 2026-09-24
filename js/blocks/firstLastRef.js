@@ -3,7 +3,7 @@ import { makeTextBlock } from "./textBlock.js";
 // Только для режима «первый и последний кадр» (две картинки): официальная вводная строка MiniMax H3.
 // Время второй картинки по умолчанию равно длительности видео, номер шота — числу шотов на момент
 // добавления. Всё это обычный текст: поправь секунды и номера, если нужно.
-export const firstLastRefBlock = makeTextBlock({
+export const FirstLastRefBlockBuilder = makeTextBlock({
   type: "fl2v",
   icon: "📎",
   label: "Первый и последний кадр (две картинки)",

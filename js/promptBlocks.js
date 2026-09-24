@@ -1,12 +1,19 @@
 // Точка входа: связывает узел ComfyUI с модулями. Логика блоков живёт в blocks/ и items/.
 import { app } from "../../scripts/app.js";
 import { el, btn, stopKeysBubbling } from "./lib/dom.js";
+import { THEME } from "./lib/theme.js";
 import { Menu, menuMinHeight } from "./lib/menu.js";
 import { extractTags, createPalette } from "./lib/tagPalette.js";
+import { createBookmarkRibbon } from "./lib/bookmarkRibbon.js";
 import { BLOCKS, TOP_MENU } from "./blocks/index.js";
 import { SHOT_MENU } from "./items/index.js";
 import { compile, migrate, rank } from "./core/compile.js";
-import { refTemplateStore, loraStore } from "./core/stores.js";
+import { refTemplateStore, loraStore, styleStore, soundStore, musicStore } from "./core/stores.js";
+import { on } from "./system/eventBus.js";
+
+// Билдер целого пресета (весь набор блоков): «Шаблон» → пункт пресета → payload несёт сам пресет,
+// resolve отдаёт МАССИВ блоков (не один блок) — presetBtn.onclick ниже кладёт их все разом в state.
+on("preset", ({ payload, resolve }) => resolve((payload.template.blocks || []).map((b) => JSON.parse(JSON.stringify(b)))));
 
 // Триггер-слова включённых LoRA (поле «Триггер» в ноде LoRA Guide — js/loraGuide.js) — общий
 // store на файле (core/stores.js -> loraStore), поэтому читается здесь без связи нод графом.
@@ -41,21 +48,31 @@ app.registerExtension({
       const mainView = el("div", "display:flex;flex-direction:column;gap:8px;");
       const list = el("div", "display:flex;flex-direction:column;gap:8px;");
       const bar = el("div", "display:flex;gap:6px;");
-      const addBtn = btn("+ Добавить блок", "flex:2;");
-      const copyBtn = btn("Копировать", "flex:1;");
-      const presetBtn = btn("📋 Шаблон", "flex:1;");
+      const addBtn = btn("+ Добавить блок", "flex:2;", THEME.heights.addBlock);
+      const copyBtn = btn("Копировать", "flex:1;", THEME.heights.copy);
+      const presetBtn = btn("📋 Шаблон", "flex:1;", THEME.heights.template);
       bar.append(addBtn, copyBtn, presetBtn);
       // Отдельной строкой снизу — реже нужна и необратима (сносит весь набор блоков), поэтому
       // не смешана с основной панелью и подкрашена предупреждающим цветом (как «выкл» у LoRA Guide).
-      const resetBtn = btn("Сбросить всё", "background:rgba(224,138,138,.08);border-color:rgba(224,138,138,.3);color:#e08a8a;");
+      const resetBtn = btn(
+        "Сбросить всё",
+        `background:${THEME.status.resetBg};border-color:${THEME.status.resetBorder};color:${THEME.status.offText};`,
+        THEME.heights.resetAll
+      );
       resetBtn.onclick = () => {
         if (!state.length) return;
         if (!confirm("Удалить все блоки и начать заново? Отменить нельзя.")) return;
         state = [];
         rerender();
       };
+      // Лента закладок — пилюли по шаблонам, отмеченным ★ в меню «Добавить блок» (Визуальный
+      // стиль/Звуки/Музыка). Наверху, над списком блоков — быстрый доступ без похода в меню.
+      const ribbon = createBookmarkRibbon(
+        [{ type: "style", store: styleStore }, { type: "sound", store: soundStore }, { type: "music", store: musicStore }],
+        { onInsert: (b) => { state.push(b); rerender(); } }
+      );
       const palette = createPalette(root, { onSizeChange: () => fit() });
-      mainView.append(list, palette.el, bar, resetBtn);
+      mainView.append(ribbon.el, list, palette.el, bar, resetBtn);
       const menuView = el("div", "display:none;flex-direction:column;gap:6px;");
       root.append(mainView, menuView);
       stopKeysBubbling(root);
@@ -81,7 +98,7 @@ app.registerExtension({
         mainView.style.display = "flex";
         root.style.minHeight = "0"; // резерв под меню нужен только пока оно открыто
       };
-      const rerender = () => { render(); save(); fit(); };
+      const rerender = () => { render(); ribbon.render(); save(); fit(); };
 
       const ctx = {
         save, fit, rerender,
@@ -118,7 +135,7 @@ app.registerExtension({
       const presetMenuItems = () => [
         ...refTemplateStore.list().map((t) => ({
           label: `${t.name} (${(t.blocks || []).length})`,
-          make: () => (t.blocks || []).map((b) => JSON.parse(JSON.stringify(b))),
+          emitId: "preset", payload: { template: t },
           onDelete: () => refTemplateStore.remove(t.id),
         })),
         { icon: "💾", label: "Сохранить текущий набор как пресет", view: savePresetView },

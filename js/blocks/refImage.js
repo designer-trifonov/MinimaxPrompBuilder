@@ -1,5 +1,6 @@
 import { el, row, card, textArea, textInput, segmented, chipToggle, CARD_COLORS } from "../lib/dom.js";
 import { ROLE_DEFS_BY_MEDIA, roleList, defsFor, makeRef, ownTag, kindOf, noteFor, retextNoun } from "./refImageRoles.js";
+import { on } from "../system/eventBus.js";
 
 // Референс (reference-to-video): определение субъекта + маркер сохранения (retention).
 // Референс бывает с картинки (<Picture N>) или с видео (<Video N>) — media у блока, задаётся
@@ -31,15 +32,9 @@ function nextNumbers(ctx, media) {
 
 // Пункты меню «Добавить блок» для одного media (список ролей превращается в лист меню).
 const mediaMenuChildren = (media) =>
-  roleList(media).map((r) => ({
-    label: r.label,
-    make: (ctx) => {
-      const { subjectN, refN } = nextNumbers(ctx, media);
-      return makeRef(subjectN, r.kind, media, refN);
-    },
-  }));
+  roleList(media).map((r) => ({ label: r.label, emitId: "ref", payload: { media, kind: r.kind } }));
 
-export const refImageBlock = {
+export const RefBlockBuilder = {
   type: "ref",
   group: "ref",
   menu: {
@@ -49,6 +44,14 @@ export const refImageBlock = {
       { label: "🖼 Из картинки", children: mediaMenuChildren("picture") },
       { label: "🎬 Из видео", children: mediaMenuChildren("video") },
     ],
+  },
+
+  // build — payload несёт media+kind (какая роль выбрана в меню), а номера субъекта/референса
+  // вычисляются билдером по актуальному ctx на момент клика.
+  build({ ctx, payload, resolve }) {
+    const { media, kind } = payload;
+    const { subjectN, refN } = nextNumbers(ctx, media);
+    resolve(makeRef(subjectN, kind, media, refN));
   },
 
   render(b, i, ctx) {
@@ -133,3 +136,4 @@ export const refImageBlock = {
     ].filter(Boolean).join("\n\n");
   },
 };
+on(RefBlockBuilder.type, RefBlockBuilder.build);

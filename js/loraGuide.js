@@ -6,7 +6,8 @@
 // user/<пользователь>/PromptBlocks/loras.json — общие для всех нод LoRA Guide.
 import { app } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js";
-import { el, btn, row, card, icon, CARD_COLORS, INPUT_CSS, stopKeysBubbling } from "./lib/dom.js";
+import { el, btn, row, card, icon, CARD_COLORS, INPUT_CSS, PALETTE, stopKeysBubbling } from "./lib/dom.js";
+import { THEME } from "./lib/theme.js";
 import { loraStore } from "./core/stores.js";
 
 // Папка с LoRA под MiniMax H3 — из неё автоматически тянется список файлов.
@@ -19,13 +20,13 @@ const prettyName = (file) => file.split(/[\\/]/).pop().replace(/\.(safetensors|c
 const fullPath = (file) => `${DEFAULT_LORA_DIR}\\${file.split(/[\\/]/).pop()}`;
 
 // Метки режима («Ref2V», «I2V», «T2V» и т.п.) — свои, произвольные, пользователь заводит их сам
-// под конкретную LoRA. Цвет — не ручной выбор, а стабильный хэш текста метки по одной и той же
-// палитре: одна и та же метка везде получает один и тот же цвет, без своего UI для выбора цвета.
-const TAG_PALETTE = ["#4d7bf3", "#e0a53f", "#4bbf8a", "#b47ecf", "#cf7ea0", "#3ddc84", "#e08a8a", "#6ea8d8"];
+// под конкретную LoRA. Цвет — не ручной выбор, а стабильный хэш текста метки по общей палитре
+// (PALETTE в lib/dom.js — та же, что теперь и у цветных шаблонов PromptBlocks): одна и та же
+// метка везде получает один и тот же цвет, без своего UI для выбора цвета.
 const tagColor = (tag) => {
   let h = 0;
   for (const c of tag) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  return TAG_PALETTE[h % TAG_PALETTE.length];
+  return PALETTE[h % PALETTE.length];
 };
 
 // Сводка по включённым LoRA — идёт на выход ноды (текстом, для справки/копирования).
@@ -153,8 +154,8 @@ app.registerExtension({
           });
           const addTag = el(
             "span",
-            "cursor:pointer;border-radius:999px;padding:3px 9px;font-size:11px;color:#9a9ca3;" +
-            "background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.15);",
+            `cursor:pointer;border-radius:999px;padding:3px 9px;font-size:11px;color:${THEME.text.muted};` +
+            `background:${THEME.surface.smallBtn};border:1px dashed ${THEME.border.dashed};`,
             "+ режим"
           );
           addTag.onclick = (e) => {
@@ -222,13 +223,13 @@ app.registerExtension({
         } else if ((l.guide || "").trim()) {
           const text = el(
             "span",
-            "flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#c7c9cf;",
+            `flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:${THEME.text.pillOff};`,
             l.guide.trim()
           );
-          const info = icon("info", { size: 14, color: "#8a8d94" });
+          const info = icon("info", { size: 14, color: THEME.text.summary });
           info.style.cursor = "help";
           info.title = l.guide.trim();
-          const editBtn = icon("pencil", { size: 13, color: "#8a8d94" });
+          const editBtn = icon("pencil", { size: 13, color: THEME.text.summary });
           editBtn.style.cssText += "cursor:pointer;";
           editBtn.onclick = (e) => { e.stopPropagation(); l._editGuide = true; render(); };
           guideNode = el("div", "display:flex;align-items:center;gap:7px;");
@@ -236,9 +237,9 @@ app.registerExtension({
         } else {
           const addGuide = el(
             "span",
-            "cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#6b6e76;",
+            `cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:${THEME.text.faint};`,
           );
-          addGuide.append(icon("pencil", { size: 12, color: "#6b6e76" }), el("span", "", "Добавить описание"));
+          addGuide.append(icon("pencil", { size: 12, color: THEME.text.faint }), el("span", "", "Добавить описание"));
           addGuide.onclick = (e) => { e.stopPropagation(); l._editGuide = true; render(); };
           guideNode = addGuide;
         }
@@ -247,8 +248,8 @@ app.registerExtension({
         const toggle = el(
           "button",
           "cursor:pointer;border-radius:999px;border:1px solid transparent;white-space:nowrap;" +
-          `padding:4px 11px;font-size:11px;font-weight:600;background:${l.enabled ? "rgba(75,191,138,.16)" : "rgba(224,138,138,.14)"};` +
-          `color:${l.enabled ? "#4bbf8a" : "#e08a8a"};`,
+          `padding:4px 11px;font-size:11px;font-weight:600;background:${l.enabled ? THEME.status.onBg : THEME.status.offBg};` +
+          `color:${l.enabled ? THEME.status.onText : THEME.status.offText};`,
           l.enabled ? "Вкл" : "Выкл"
         );
         toggle.onclick = async (e) => {
@@ -264,7 +265,7 @@ app.registerExtension({
         // Гаечка сочно-зелёная, когда LoRA включена, и серая — когда выключена: цвет самой
         // иконки говорит о состоянии, а не о категории (для этого есть отдельная полоска слева).
         return card(l.name || l.file || "LoRA", items, i, { fit }, body, {
-          color: CARD_COLORS.lora, icon: "wrench", iconColor: l.enabled ? "#3ddc84" : "#6b6e76",
+          color: CARD_COLORS.lora, icon: "wrench", iconColor: l.enabled ? THEME.status.onIcon : THEME.status.offIcon,
           rightControl: toggle, boldTitle: false,
           summary: `сила ${fmtStrength(l.strength ?? l.defaultStrength ?? DEFAULT_STRENGTH)}`,
         });

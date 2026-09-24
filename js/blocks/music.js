@@ -2,7 +2,7 @@ import { makeTextBlock } from "./textBlock.js";
 import { musicStore } from "../core/stores.js";
 import { CARD_COLORS } from "../lib/dom.js";
 
-export const musicBlock = makeTextBlock({
+export const MusicBlockBuilder = makeTextBlock({
   type: "music",
   icon: "note",
   label: "Музыка",

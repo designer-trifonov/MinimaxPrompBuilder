@@ -7,7 +7,7 @@ import { shotDescStore } from "../core/stores.js";
 // шаблон не редактировать, он всё равно идёт в промпт (это не «начало фразы», а сразу вся фраза).
 // Иконка — фотокарточка (photo), не видеокамера (camera выше у items/camera.js): это не движение
 // камеры, а зафиксированное описание всей сцены целиком, визуально они не должны путаться.
-export const shotDescItem = makeTemplateItem({
+export const ShotDescBlockBuilder = makeTemplateItem({
   t: "shotDesc", icon: "photo", label: "Описание сцены", store: shotDescStore, skipUnchanged: false, textRows: 3,
   newLabel: "Новое описание сцены", saveLabel: "Сохранить как описание сцены",
   namePlaceholder: "Название (например: POV)",

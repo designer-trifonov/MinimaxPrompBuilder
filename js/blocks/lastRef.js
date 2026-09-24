@@ -2,7 +2,7 @@ import { makeTextBlock } from "./textBlock.js";
 
 // Режим «последний кадр» (L2VA): официальная вводная строка MiniMax H3.
 // Время — длительность видео, номер шота — число шотов на момент добавления; всё правится в тексте.
-export const lastRefBlock = makeTextBlock({
+export const LastRefBlockBuilder = makeTextBlock({
   type: "l2v",
   icon: "🏁",
   label: "Последний кадр (last-frame-to-video)",

@@ -1,6 +1,7 @@
 import { el, row, small, numInput, textInput, textArea } from "../lib/dom.js";
 import { groupedTemplateEntries } from "../lib/templates.js";
 import { weActionStore } from "../core/stores.js";
+import { on } from "../system/eventBus.js";
 
 // Кого ставим по умолчанию как «для кого действие»: есть референс-блоки → <Subject 1>, иначе — «the person».
 const defaultSubject = (ctx) => {
@@ -19,28 +20,37 @@ const SPEEDS = [
   ["Очень быстро", "at an extremely rapid, fast-paced tempo, large amplitude, quick sharp motion with motion blur, like rapid machine-gun-fast speed — "],
 ];
 
-export const actionItem = {
+export const ActionBlockBuilder = {
   t: "action",
   // Два входа: действие референса (кто на видео — субъект) и действие «за нас» (POV-зритель).
   // Пока оба поля текста пустые — заполняются вручную, здесь только структура/разметка времени.
   icon: "clock",
+  // build — один билдер на оба варианта листа («Действие референса» — payload пуст, «мы/POV» —
+  // payload.we): {target} в тексте шаблона подставляется тегом субъекта при компиляции (см.
+  // compile), а не жёстким «her», чтобы всегда было ясно, о ком речь, даже при нескольких субъектах.
+  build({ ctx, payload, resolve }) {
+    if (payload?.we) {
+      const target = defaultSubject(ctx);
+      const text = payload.template ? payload.template.text : "";
+      return resolve({ t: "action", from: 0, to: 1, text, who: "we", target });
+    }
+    resolve(makeAction(defaultSubject(ctx)));
+  },
   menu: {
     icon: "clock", label: "Действие",
-    // children вызывается без ctx (Menu#draw зовёт top.items() без аргументов) — ctx доступен
-    // только в make(ctx) на листе, см. Menu#row: it.make(this.ctx). defaultSubject считаем там.
+    // children вызывается без ctx (Menu#draw зовёт top.items() без аргументов) — ctx приходит
+    // билдеру ("action" выше) через emit(..., {ctx,...}) в момент клика, там и считаем defaultSubject.
     children: () => [
-      { label: "Действие референса", make: (ctx) => makeAction(defaultSubject(ctx)) },
+      { label: "Действие референса", emitId: "action" },
       {
         label: "Действие — мы (зритель, POV)",
         children: () => [
           ...groupedTemplateEntries(weActionStore, {
-            // {target} в тексте шаблона — подставляется тегом субъекта при компиляции (см. compile),
-            // а не жёстким «her», чтобы всегда было ясно, о ком речь, даже при нескольких субъектах.
-            make: (t, ctx) => ({ t: "action", from: 0, to: 1, text: t.text, who: "we", target: defaultSubject(ctx) }),
+            emitId: "action", extra: { we: true },
             newLabel: "Новое действие (вручную)", saveLabel: "Сохранить действие",
             namePlaceholder: "Название", textPlaceholder: "Действие по-английски, {target} — тег субъекта",
           }),
-          { label: "Пустой элемент", make: (ctx) => makeAction("we", defaultSubject(ctx)) },
+          { label: "Пустой элемент", emitId: "action", payload: { we: true } },
         ],
       },
     ],
@@ -82,3 +92,4 @@ export const actionItem = {
     return `${who} ${text}`;
   },
 };
+on(ActionBlockBuilder.t, ActionBlockBuilder.build);

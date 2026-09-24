@@ -11,7 +11,7 @@ export function renderAttribute(attr, person, ctx) {
   pick.onclick = () =>
     ctx.openMenu(
       () => buildEntries(attr.store, {
-        make: (t) => ({ name: t.name, text: t.text }),
+        emitId: attr.key, // билдер за attr.key зарегистрирован в attributes.js (по одному на атрибут)
         filter: (t) => allowed(t, person),
         newLabel: attr.newLabel,
         saveLabel: "Сохранить шаблон",

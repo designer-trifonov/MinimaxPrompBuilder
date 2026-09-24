@@ -1,0 +1,27 @@
+[
+  {
+    "id": "seed00",
+    "name": "Съёмка на смартфон",
+    "text": "Cool color grading with pale, desaturated tones; flat overcast daylight — bright, diffused white light with no direct sunlight, no visible sun, no warm golden-hour glow and no harsh shadows; neutral, characterless atmosphere"
+  },
+  {
+    "id": "seed01",
+    "name": "Кинематограф",
+    "text": "Cinematic live-action, shallow depth of field, soft natural lighting, professional color grading"
+  },
+  {
+    "id": "seed02",
+    "name": "Аниме (стиль Миядзаки)",
+    "text": "Anime style inspired by Hayao Miyazaki, hand-painted backgrounds, soft colors, gentle natural lighting"
+  },
+  {
+    "id": "seed03",
+    "name": "Старая плёнка",
+    "text": "Vintage 35mm film look, warm faded colors, visible film grain, soft natural lighting"
+  },
+  {
+    "id": "seed04",
+    "name": "Кассета VHS",
+    "text": "Vintage VHS camcorder footage, low resolution, tracking noise, washed-out colors, flat on-camera lighting"
+  }
+]

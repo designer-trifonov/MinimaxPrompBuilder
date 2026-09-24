@@ -1,6 +1,7 @@
 import { el, row, textInput, textArea } from "../lib/dom.js";
 import { templateEntries } from "../lib/templates.js";
 import { outfitStore } from "../shared/outfits.js";
+import { on } from "../system/eventBus.js";
 
 // Образ (одежда без человека) из Scene Builder, применяемый к субъекту: «<Subject 1> wearing ...».
 // Кого одеваем по умолчанию: есть референс-блоки → <Subject 1>; есть одна картинка (image-to-video) →
@@ -12,22 +13,25 @@ const defaultSubject = (ctx) => {
   if (state.some((b) => IMAGE_MODES.includes(b.type))) return "the person in <Picture 1>";
   return "the person";
 };
-const make = (t, ctx) => ({ t: "outfit", name: t.name, who: defaultSubject(ctx), text: t.text });
 
-export const outfitItem = {
+export const OutfitBlockBuilder = {
   t: "outfit",
   icon: "outfit",
   menu: {
     icon: "outfit", label: "Образ",
     children: () => [
       ...templateEntries(outfitStore, {
-        make,
+        emitId: "outfit",
         newLabel: "Новый образ (вручную)", saveLabel: "Сохранить образ",
         namePlaceholder: "Название образа",
         textPlaceholder: "Одежда по-английски (например: wearing a red plaid shirt and a black skirt)",
       }),
-      { label: "Пустой элемент", make: (ctx) => make({ name: "Образ", text: "" }, ctx) },
+      { label: "Пустой элемент", emitId: "outfit" },
     ],
+  },
+  build({ ctx, payload, resolve }) {
+    const t = payload?.template ?? { name: "Образ", text: "" };
+    resolve({ t: "outfit", name: t.name, who: defaultSubject(ctx), text: t.text });
   },
   title: (it) => `Образ: ${it.name ?? ""}`,
   body: (it, ctx) => [
@@ -39,3 +43,4 @@ export const outfitItem = {
     return text ? [(it.who || "").trim(), text].filter(Boolean).join(" ") : "";
   },
 };
+on(OutfitBlockBuilder.t, OutfitBlockBuilder.build);

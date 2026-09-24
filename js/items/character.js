@@ -2,6 +2,7 @@ import { textArea } from "../lib/dom.js";
 import { templateEntries } from "../lib/templates.js";
 import { characterStore } from "../shared/characters.js";
 import { makeRef } from "../blocks/refImage.js";
+import { on } from "../system/eventBus.js";
 
 // Персонаж в шоте — либо готовое текстовое описание из Scene Builder (как раньше), либо просто
 // ссылка на референс-картинку («Персонаж с референса №N»): не нужно уходить в отдельный пункт
@@ -12,13 +13,12 @@ const REF_COUNT = 2; // сколько быстрых пунктов «с реф
 const refEntries = () =>
   Array.from({ length: REF_COUNT }, (_, i) => {
     const n = i + 1;
-    return {
-      label: `Персонаж с референса №${n}`,
-      make: () => ({ t: "character", name: `С референса №${n}`, text: `<Subject ${n}>`, ref: n }),
-    };
+    return { label: `Персонаж с референса №${n}`, emitId: "character", payload: { ref: n } };
   });
 
-export const characterItem = {
+// ОДИН объект на блок «Персонаж»: build (создание при клике в меню) + отрисовка (title/body) +
+// compile — всё вместе, не разбросано по файлу отдельными кусками.
+export const CharacterBlockBuilder = {
   t: "character",
   icon: "person",
   menu: {
@@ -26,13 +26,21 @@ export const characterItem = {
     children: () => [
       ...refEntries(),
       ...templateEntries(characterStore, {
-        make: (t) => ({ t: "character", name: t.name, text: t.text }),
+        emitId: "character",
         newLabel: "Новый персонаж (вручную)", saveLabel: "Сохранить персонажа",
         namePlaceholder: "Имя персонажа",
         textPlaceholder: "Описание персонажа (по-английски)",
       }),
-      { label: "Пустой элемент", make: () => ({ t: "character", name: "Персонаж", text: "" }) },
+      { label: "Пустой элемент", emitId: "character" },
     ],
+  },
+  // build — ловит собственный id из eventBus (см. lib/menu.js#row), сам решает, чем наполнить
+  // объект, по payload с листа меню: {ref:N} — с референса, {template:t} — сохранённый шаблон,
+  // ничего — пустой элемент.
+  build({ payload, resolve }) {
+    if (payload?.ref) return resolve({ t: "character", name: `С референса №${payload.ref}`, text: `<Subject ${payload.ref}>`, ref: payload.ref });
+    if (payload?.template) return resolve({ t: "character", name: payload.template.name, text: payload.template.text });
+    resolve({ t: "character", name: "Персонаж", text: "" });
   },
   // Заводит недостающий ref-блок <Subject N> (person, картинка), если элемент — «с референса №N».
   onAdd(it, shot, ctx) {
@@ -45,3 +53,4 @@ export const characterItem = {
   body: (it, ctx) => [textArea(it, ctx, 3)],
   compile: (it) => (it.text || "").trim(),
 };
+on(CharacterBlockBuilder.t, CharacterBlockBuilder.build);

@@ -4,6 +4,8 @@ import { el, btn, stopKeysBubbling } from "./lib/dom.js";
 import { Menu } from "./lib/menu.js";
 import { OBJECTS, OBJECT_MENU } from "./scene/objects/index.js";
 import { compileScene } from "./scene/compile.js";
+import "./scene/attributeBlockBuilders.js"; // регистрирует билдеры атрибутов в eventBus (side-effect импорт)
+import "./scene/clothingBlockBuilders.js"; // регистрирует билдеры одежды/цвета/образов в eventBus
 
 const MENU_MIN_H = 320; // резерв высоты под меню, пока оно открыто
 
