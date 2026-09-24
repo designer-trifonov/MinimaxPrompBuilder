@@ -24,7 +24,7 @@ function loadTemplates(id) {
 }
 
 function buildTemplateList(templates, blockId) {
-  const box = el("div", "display:flex;flex-direction:column;gap:6px;margin-left:18px;");
+  const box = el("div", "display:flex;flex-direction:column;gap:6px;margin-bottom:18px;");
   buildTemplateViews(templates, blockId).forEach((row) => box.append(row));
 
   const createBtn = btn("+ Создать новый шаблон", "border-style:dashed;background:transparent;");
@@ -65,6 +65,7 @@ async function saveTemplate({ id, title, content, blockId }) {
 }
 
 function reset() {
+  inserted.forEach((box) => box.remove());
   inserted.clear();
 }
 
@@ -99,7 +100,12 @@ export function subscribe() {
     try {
       templates = await loadTemplates(id);
     } catch {
-      return;
+      if (id?.startsWith("promptBlock")) {
+        TemplateBuilder.reset();
+        emit("showMainMenu", {});
+        return;
+      }
+      templates = [];
     }
     const box = buildTemplateList(templates, id);
     if (parentEl) parentEl.append(box);

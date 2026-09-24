@@ -1,6 +1,8 @@
 import { app } from "../../scripts/app.js";
 import { initNode } from "./system/bootstrap.js";
 import { on } from "./system/eventBus.js";
+import { container as promptBlockList, registerBlock } from "./system/promptBlockOrderManager.js";
+import { buildBlock } from "./system/blockBuilder.js";
 
 const el = (tag, css = "", text = "") => {
   const e = document.createElement(tag);
@@ -33,10 +35,16 @@ app.registerExtension({
         promptW.options = { ...(promptW.options || {}), hidden: true };
         promptW.computeSize = () => [0, -4];
       }
+      const blocksW = node.widgets.find((w) => w.name === "blocks");
+      if (blocksW) {
+        blocksW.hidden = true;
+        blocksW.options = { ...(blocksW.options || {}), hidden: true };
+        blocksW.computeSize = () => [0, -4];
+      }
 
-      const root = el("div", "display:flex;flex-direction:column;gap:6px;width:100%;box-sizing:border-box;");
+      const root = el("div", "display:flex;flex-direction:column;gap:6px;width:100%;box-sizing:border-box;margin-top:8px;");
       const mainView = el("div", "display:flex;flex-direction:column;gap:8px;");
-      root.append(mainView);
+      root.append(mainView, promptBlockList);
       stopKeysBubbling(root);
 
       const fit = () => {
@@ -63,6 +71,18 @@ app.registerExtension({
       on("promptText:changed", ({ text } = {}) => {
         if (promptW) promptW.value = text ?? "";
       });
+
+      on("promptBlocks:changed", ({ blocks } = {}) => {
+        if (blocksW) blocksW.value = JSON.stringify(blocks ?? []);
+      });
+
+      if (blocksW?.value) {
+        try {
+          const saved = JSON.parse(blocksW.value);
+          saved.forEach((blockData) => registerBlock(blockData.id, buildBlock(blockData), blockData));
+        } catch {
+        }
+      }
 
       node.addDOMWidget("editor", "prompt_blocks_v2_ui", root, { serialize: false, getMinHeight: () => 60 });
       node.setSize([460, 200]);

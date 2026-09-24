@@ -1,4 +1,3 @@
-/*
 let last = null;
 
 function remember(e) {
@@ -18,5 +17,3 @@ export function insertAtCursor(text) {
   f.dispatchEvent(new Event("input", { bubbles: true }));
   return true;
 }
-
-*/

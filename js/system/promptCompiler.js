@@ -1,16 +1,26 @@
-/*
 import { on, emit } from "./eventBus.js";
 
 let order = [];
 const entries = new Map();
 
+const TAIL_FALLBACKS = [
+  { prefix: "templateClickSounds", text: "overall_soundscape: N/A" },
+  { prefix: "templateClickMusic", text: "non_diegetic_music: N/A" },
+];
+
 function compile() {
-  return order
+  const parts = order
     .map((id) => entries.get(id))
     .filter(Boolean)
     .map((e) => (e.text || "").trim())
-    .filter(Boolean)
-    .join("\n\n");
+    .filter(Boolean);
+
+  TAIL_FALLBACKS.forEach(({ prefix, text }) => {
+    const has = [...entries.values()].some((e) => e.blockId?.startsWith(prefix));
+    if (!has) parts.push(text);
+  });
+
+  return parts.join("\n\n");
 }
 
 export function getPromptText() {
@@ -49,5 +59,3 @@ on("copy", async () => {
   } catch {
   }
 });
-
-*/

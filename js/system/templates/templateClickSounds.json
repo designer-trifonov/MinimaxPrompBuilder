@@ -1,0 +1,3 @@
+[
+  { "id": "promptBlockSoundsNone", "name": "Без звука", "text": "overall_soundscape: N/A", "icon": "speaker", "default": true, "color": "#b47ecf" }
+]

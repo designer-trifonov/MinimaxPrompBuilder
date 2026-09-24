@@ -1,6 +1,6 @@
 [
-  { "id": "templateClickReferenceVideoStructure", "title": "Структура сцены целиком", "category": true, "default": true },
-  { "id": "templateClickReferenceVideoMotion", "title": "Движение / Хореография", "category": true, "default": true },
-  { "id": "templateClickReferenceVideoCharacter", "title": "Персонаж", "category": true, "default": true },
-  { "id": "templateClickReferenceVideoStyle", "title": "Стиль и свет", "category": true, "default": true }
+  { "id": "templateClickReferenceVideoStructure", "title": "Структура сцены целиком", "category": true, "default": true, "color": "#4d7bf3" },
+  { "id": "templateClickReferenceVideoMotion", "title": "Движение / Хореография", "category": true, "default": true, "color": "#4d7bf3" },
+  { "id": "templateClickReferenceVideoCharacter", "title": "Персонаж", "category": true, "default": true, "color": "#4d7bf3" },
+  { "id": "templateClickReferenceVideoStyle", "title": "Стиль и свет", "category": true, "default": true, "color": "#4d7bf3" }
 ]

@@ -1,7 +1,9 @@
 import { emit, on } from "./eventBus.js";
+import { THEME } from "./theme.js";
 
 const BTN_H = 30;
-const BTN_CSS = "appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#42454f;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:#dcdee3;";
+const BTN_CSS = `appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:${THEME.surface.button};border:1px solid ${THEME.border.button};border-radius:8px;color:${THEME.text.button};`;
+const FIELD_CSS = `background:${THEME.surface.input};border:1px solid ${THEME.border.input};border-radius:8px;color:${THEME.text.input};padding:6px 8px;font:inherit;box-sizing:border-box;`;
 
 const el = (tag, css = "", text = "") => {
   const e = document.createElement(tag);
@@ -23,10 +25,10 @@ function buildIconBtn(iconId) {
 }
 
 export function buildEditForm(template, close, blockId) {
-  const box = el("div", "display:flex;flex-direction:column;gap:6px;padding:8px;margin-left:18px;");
-  const titleInput = el("input", "width:100%;box-sizing:border-box;");
+  const box = el("div", "display:flex;flex-direction:column;gap:6px;padding:8px;");
+  const titleInput = el("input", `width:100%;${FIELD_CSS}`);
   titleInput.value = template.name ?? "";
-  const contentInput = el("textarea", "width:100%;box-sizing:border-box;resize:vertical;");
+  const contentInput = el("textarea", `width:100%;resize:vertical;${FIELD_CSS}`);
   contentInput.rows = 3;
   contentInput.value = template.text ?? "";
 
@@ -47,15 +49,16 @@ export function buildEditForm(template, close, blockId) {
 export function buildTemplateView(template, blockId) {
   const row = btn("", "display:flex;align-items:center;gap:6px;justify-content:flex-start;text-align:left;");
 
-  emit("icon:get", { id: template.icon, size: 14, resolve: (iconEl) => iconEl && row.append(iconEl) });
+  const color = template.color || THEME.text.title;
+  emit("icon:get", { id: template.icon, size: 14, color, resolve: (iconEl) => iconEl && row.append(iconEl) });
 
   row.append(el(
     "span",
-    "flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;",
+    `flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${color};`,
     template.name ?? template.title ?? ""
   ));
 
-  row.onclick = () => emit("templateClicked", { id: template.id, afterEl: row });
+  row.onclick = () => emit("templateClicked", { id: template.id, afterEl: row, blockId });
 
   let isBookmarked = !!template.bookmarked;
   const bookmarkBtn = buildIconBtn(isBookmarked ? "bookmarkOn" : "bookmark");

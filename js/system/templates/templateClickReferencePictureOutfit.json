@@ -1,4 +1,4 @@
 [
-  { "id": "promptBlockReferencePictureOutfitFull", "name": "Перенести весь комплект целиком", "text": "the entire outfit — every visible piece of clothing and footwear, top and bottom — is transferred onto the target subject, fully replacing all of their original clothing; the target subject's face, hair, and body are not altered — only their clothing changes" },
-  { "id": "promptBlockReferencePictureOutfitStyle", "name": "Перенести только стиль одежды", "text": "only the general style category of the outfit is referenced as inspiration — not the exact garments, cut, or colors" }
+  { "id": "promptBlockReferencePictureOutfitFull", "name": "Перенести весь комплект целиком", "text": "the entire outfit — every visible piece of clothing and footwear, top and bottom — is transferred onto the target subject, fully replacing all of their original clothing; the target subject's face, hair, and body are not altered — only their clothing changes", "icon": "ref", "default": true, "color": "#4d7bf3" },
+  { "id": "promptBlockReferencePictureOutfitStyle", "name": "Перенести только стиль одежды", "text": "only the general style category of the outfit is referenced as inspiration — not the exact garments, cut, or colors", "icon": "ref", "default": true, "color": "#4d7bf3" }
 ]

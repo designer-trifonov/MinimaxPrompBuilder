@@ -1,11 +1,11 @@
 [
-  { "id": "templateClickShotCharacter", "title": "Персонаж", "category": true, "icon": "person", "default": true },
-  { "id": "templateClickShotOutfit", "title": "Образ", "category": true, "icon": "outfit", "default": true },
-  { "id": "templateClickShotReferenceLink", "title": "Связь референсов", "category": true, "icon": "link", "default": true },
-  { "id": "templateClickShotFrame", "title": "План кадра", "category": true, "icon": "frame", "default": true },
-  { "id": "templateClickShotDescription", "title": "Описание кадра", "category": true, "icon": "photo", "default": true },
-  { "id": "templateClickShotCamera", "title": "Камера", "category": true, "icon": "camera", "default": true },
-  { "id": "templateClickShotActionCharacter", "title": "Действие персонажа", "category": true, "icon": "clock", "default": true },
-  { "id": "templateClickShotActionOffscreen", "title": "Действие за кадром", "category": true, "icon": "clock", "default": true },
-  { "id": "templateClickShotDialog", "title": "Диалог", "category": true, "icon": "chat", "default": true }
+  { "id": "templateClickShotCharacter", "title": "Персонаж", "category": true, "icon": "person", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotOutfit", "title": "Образ", "category": true, "icon": "outfit", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotReferenceLink", "title": "Связь референсов", "category": true, "icon": "link", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotFrame", "title": "План кадра", "category": true, "icon": "frame", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotDescription", "title": "Описание кадра", "category": true, "icon": "photo", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotCamera", "title": "Камера", "category": true, "icon": "camera", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotActionCharacter", "title": "Действие персонажа", "category": true, "icon": "clock", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotActionOffscreen", "title": "Действие за кадром", "category": true, "icon": "clock", "default": true, "color": "#4bbf8a" },
+  { "id": "templateClickShotDialog", "title": "Диалог", "category": true, "icon": "chat", "default": true, "color": "#4bbf8a" }
 ]

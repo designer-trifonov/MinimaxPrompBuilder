@@ -1,5 +1,5 @@
 [
-  { "id": "templateClickReferencePicture", "title": "Картинка", "category": true, "icon": "ref", "default": true },
-  { "id": "templateClickReferenceVideo", "title": "Видео", "category": true, "icon": "ref", "default": true },
-  { "id": "templateClickReferenceAudio", "title": "Аудио", "category": true, "icon": "ref", "default": true }
+  { "id": "templateClickReferencePicture", "title": "Картинка", "category": true, "icon": "ref", "default": true, "color": "#4d7bf3" },
+  { "id": "templateClickReferenceVideo", "title": "Видео", "category": true, "icon": "ref", "default": true, "color": "#4d7bf3" },
+  { "id": "templateClickReferenceAudio", "title": "Аудио", "category": true, "icon": "ref", "default": true, "color": "#4d7bf3" }
 ]

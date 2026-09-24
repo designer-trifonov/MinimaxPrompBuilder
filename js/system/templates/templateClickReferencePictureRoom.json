@@ -1,4 +1,4 @@
 [
-  { "id": "promptBlockReferencePictureRoomFull", "name": "Сохранить помещение полностью", "text": "the environment (location, architecture, decor, furniture and lighting) is retained exactly as shown in the reference, but reframed for the current shot" },
-  { "id": "promptBlockReferencePictureRoomMood", "name": "Сохранить атмосферу помещения", "text": "only the general mood, lighting and color tone of the room are referenced as inspiration — not its specific architecture or layout" }
+  { "id": "promptBlockReferencePictureRoomFull", "name": "Сохранить помещение полностью", "text": "the environment (location, architecture, decor, furniture and lighting) is retained exactly as shown in the reference, but reframed for the current shot", "icon": "ref", "default": true, "color": "#4d7bf3" },
+  { "id": "promptBlockReferencePictureRoomMood", "name": "Сохранить атмосферу помещения", "text": "only the general mood, lighting and color tone of the room are referenced as inspiration — not its specific architecture or layout", "icon": "ref", "default": true, "color": "#4d7bf3" }
 ]

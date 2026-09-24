@@ -1,4 +1,4 @@
 [
-  { "id": "promptBlockReferencePictureObjectFull", "name": "Сохранить предмет полностью", "text": "the object is retained exactly as shown in the reference and placed naturally within the new scene" },
-  { "id": "promptBlockReferencePictureObjectTransfer", "name": "Перенести предмет в другую сцену", "text": "the object, kept exactly as shown in the reference, is transferred into a different scene and naturally placed within it" }
+  { "id": "promptBlockReferencePictureObjectFull", "name": "Сохранить предмет полностью", "text": "the object is retained exactly as shown in the reference and placed naturally within the new scene", "icon": "ref", "default": true, "color": "#4d7bf3" },
+  { "id": "promptBlockReferencePictureObjectTransfer", "name": "Перенести предмет в другую сцену", "text": "the object, kept exactly as shown in the reference, is transferred into a different scene and naturally placed within it", "icon": "ref", "default": true, "color": "#4d7bf3" }
 ]

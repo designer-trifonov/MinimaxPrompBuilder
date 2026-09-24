@@ -1,7 +1,7 @@
 [
-  { "id": "templateClickVisualStyle", "title": "Визуальный стиль", "default": true, "icon": "visualStyleEvent" },
-  { "id": "templateClickReference", "title": "Референс", "default": true, "icon": "referenceEvent" },
-  { "id": "templateClickShot", "title": "Шот", "default": true, "icon": "shotEvent" },
-  { "id": "templateClickSounds", "title": "Звуки", "default": true, "icon": "soundsEvent" },
-  { "id": "templateClickMusic", "title": "Музыка", "default": true, "icon": "musicEvent" }
+  { "id": "templateClickVisualStyle", "title": "Визуальный стиль", "default": true, "icon": "visualStyleEvent", "color": "#e0a53f" },
+  { "id": "templateClickReference", "title": "Референс", "default": true, "icon": "referenceEvent", "color": "#4d7bf3" },
+  { "id": "templateClickShot", "title": "Шот", "default": true, "icon": "shotEvent", "color": "#4bbf8a" },
+  { "id": "templateClickSounds", "title": "Звуки", "default": true, "icon": "soundsEvent", "color": "#b47ecf" },
+  { "id": "templateClickMusic", "title": "Музыка", "default": true, "icon": "musicEvent", "color": "#cf7ea0" }
 ]

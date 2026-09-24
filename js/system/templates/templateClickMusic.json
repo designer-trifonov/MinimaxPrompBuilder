@@ -1,0 +1,3 @@
+[
+  { "id": "promptBlockMusicNone", "name": "Без музыки", "text": "non_diegetic_music: N/A", "icon": "note", "default": true, "color": "#cf7ea0" }
+]

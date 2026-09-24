@@ -1,4 +1,3 @@
-/*
 import { on, emit } from "./eventBus.js";
 
 const el = (tag, css = "", text = "") => {
@@ -10,12 +9,20 @@ const el = (tag, css = "", text = "") => {
 
 export const container = el("div", "display:flex;flex-direction:column;gap:8px;");
 const elements = new Map();
+const data = new Map();
 
-export function registerBlock(id, blockEl) {
+function announce() {
+  const order = [...container.children].map((c) => c.dataset.promptId);
+  emit("promptBlocks:changed", { blocks: order.map((id) => data.get(id)).filter(Boolean) });
+}
+
+export function registerBlock(id, blockEl, blockData) {
   blockEl.dataset.promptId = id;
   elements.set(id, blockEl);
+  if (blockData) data.set(id, blockData);
   container.append(blockEl);
   emitOrder();
+  announce();
 }
 
 function emitOrder() {
@@ -30,18 +37,23 @@ function move(id, dir) {
   if (dir === "up") container.insertBefore(elm, sibling);
   else container.insertBefore(sibling, elm);
   emitOrder();
+  announce();
 }
 
 function remove(id) {
   elements.get(id)?.remove();
   elements.delete(id);
+  data.delete(id);
   emit("promptBlock:remove", { id });
   emitOrder();
+  announce();
 }
 
 export function clear() {
   container.innerHTML = "";
   elements.clear();
+  data.clear();
+  announce();
 }
 
 on("promptBlock:action", ({ id, action } = {}) => {
@@ -52,4 +64,6 @@ on("promptBlock:action", ({ id, action } = {}) => {
 
 on("resetAll", () => clear());
 
-*/
+on("promptBlock:add", ({ id, el: blockEl, data: blockData } = {}) => {
+  if (id && blockEl) registerBlock(id, blockEl, blockData);
+});

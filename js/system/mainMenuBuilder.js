@@ -1,7 +1,11 @@
 import { emit, on } from "./eventBus.js";
+import { buildPills } from "./pillBuilder.js";
+import { getBookmarks, ready } from "./bookmarkEditor.js";
+import { insertAtCursor } from "./cursorTracker.js";
+import { THEME } from "./theme.js";
 
 const BTN_H = 30;
-const BTN_CSS = "appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;background:#42454f;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:#dcdee3;";
+const BTN_CSS = `appearance:none;-webkit-appearance:none;box-sizing:border-box;padding:0 10px;background:${THEME.surface.button};border:1px solid ${THEME.border.button};border-radius:8px;color:${THEME.text.button};`;
 
 const el = (tag, css = "", text = "") => {
   const e = document.createElement(tag);
@@ -27,21 +31,24 @@ export const MainMenuBuilder = {
     const root = el("div", "display:flex;flex-direction:column;gap:6px;");
     currentRoot = root;
 
+    const pillsRow = el("div", "display:flex;flex-direction:column;");
+    ready()?.then(() => pillsRow.append(buildPills(getBookmarks(), (template) => insertAtCursor(template.text))));
+
     const bar = el("div", "display:flex;gap:6px;");
     const addBtn = iconBtn("plus", "Добавить блок", "flex:2;");
     const copyBtn = iconBtn("copy", "Копировать", "flex:1;");
     const presetBtn = iconBtn("template", "Шаблон", "flex:1;");
     bar.append(addBtn, copyBtn, presetBtn);
 
-    const resetBtn = btn("Сбросить всё", "background:rgba(224,138,138,.08);border-color:rgba(224,138,138,.3);color:#e08a8a;");
+    const resetBtn = btn("Сбросить всё", `background:${THEME.status.resetBg};border-color:${THEME.status.resetBorder};color:${THEME.status.offText};`);
 
     addBtn.onclick = () => emit("templateClicked", { id: "templateClickBlocks", parentEl: currentRoot });
     copyBtn.onclick = () => emit("copy", {});
     presetBtn.onclick = () => emit("template", {});
     resetBtn.onclick = () => emit("resetAll", {});
 
-    root.append(bar, resetBtn);
-    return { root, bar, addBtn, copyBtn, presetBtn, resetBtn };
+    root.append(pillsRow, bar, resetBtn);
+    return { root, bar, addBtn, copyBtn, presetBtn, resetBtn, pillsRow };
   },
   clear() {
     if (currentRoot) currentRoot.innerHTML = "";

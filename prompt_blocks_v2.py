@@ -19,6 +19,7 @@ class PromptBlocksV2:
             "required": {
                 "duration": ("FLOAT", {"default": 5.0, "min": 1.0, "max": 15.0, "step": 0.5}),
                 "prompt": ("STRING", {"default": "", "multiline": False, "hidden": True}),
+                "blocks": ("STRING", {"default": "[]", "multiline": False, "hidden": True}),
             }
         }
 
@@ -27,5 +28,5 @@ class PromptBlocksV2:
     FUNCTION = "run"
     CATEGORY = "MiniMax H3/Utils"
 
-    def run(self, duration, prompt):
+    def run(self, duration, prompt, blocks):
         return (prompt, frames_for(duration))
